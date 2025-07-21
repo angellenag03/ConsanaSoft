@@ -1,6 +1,5 @@
 package ui;
 
-import com.sun.source.tree.ParenthesizedTree;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -48,6 +47,7 @@ public class AlmacenDialog extends JDialog {
         buscarField = new JTextField(25);
         buscarButton = new JButton("Buscar");
         suministrarButton = new JButton("Suministrar");
+        suministrarButton.setEnabled(false);
         cerrarButton = new JButton("Cerrar");
     }
     
@@ -95,10 +95,17 @@ public class AlmacenDialog extends JDialog {
                 }
             }
         });
+        
+        almacenTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && almacenTable.getSelectedRow() != -1) {
+                suministrarButton.setEnabled(true);
+            }
+        });
     }
     
     private void realizarBusqueda() {
         String textoBusqueda = buscarField.getText().trim();
+        suministrarButton.setEnabled(false);
         if(textoBusqueda.isEmpty()) {
             almacenTable.cargarDatosIniciales();
         } else {
@@ -112,4 +119,5 @@ public class AlmacenDialog extends JDialog {
         
         almacenTable.cargarDatosIniciales();
     }
+    
 }

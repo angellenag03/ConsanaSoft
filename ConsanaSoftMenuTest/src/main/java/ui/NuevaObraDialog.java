@@ -61,7 +61,7 @@ public class NuevaObraDialog extends JDialog {
         cancelarButton = new JButton("Cancelar");
         
         crearButton.setPreferredSize(new Dimension(80, 25));
-        cancelarButton.setPreferredSize(new Dimension(80, 25));
+        cancelarButton.setPreferredSize(new Dimension(90, 25));
     }
     
     private void setupLayout() {

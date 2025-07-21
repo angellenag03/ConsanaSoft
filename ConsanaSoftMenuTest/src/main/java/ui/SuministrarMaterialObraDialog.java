@@ -26,6 +26,7 @@ public class SuministrarMaterialObraDialog extends JDialog {
     
     private final String obraId;
     private final String materialId;
+    private final ObraPanel obraPanel;
     
     private JTextField cantidadField;
     private JButton aceptarButton;
@@ -37,6 +38,7 @@ public class SuministrarMaterialObraDialog extends JDialog {
         super(parent, true);
         this.obraId = obraId;
         this.materialId = materialId;
+        this.obraPanel = obraPanel;
         setTitle("Ingrese cantidad");
         initComponents();
         setupUI();
@@ -121,6 +123,8 @@ public class SuministrarMaterialObraDialog extends JDialog {
                     "Atención", JOptionPane.INFORMATION_MESSAGE);
             }
             
+            
+            obraPanel.actualizarTablaConceptos();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, 
                 "Ingrese solo números enteros", 

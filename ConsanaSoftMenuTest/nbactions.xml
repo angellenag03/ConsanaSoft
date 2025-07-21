@@ -13,7 +13,7 @@
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>--enable-preview ${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
-                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.mainClass>com.mycompany.consanasoftmenutest.ConsanaSoftMenuTest</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

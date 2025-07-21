@@ -12,6 +12,7 @@ tables\ConceptosObraTable$2.class
 utils\HTTPManager$HttpMethod.class
 ui\AddConceptoAObraDialog.class
 ui\NuevaObraDialog.class
+utils\DebugConsole$4.class
 ui\AddConceptoAObraDialog$2.class
 dto\MaterialConceptoDTO.class
 ui\MenuPanel$1.class
@@ -27,6 +28,7 @@ dto\MaterialDTO.class
 ui\AbrirObraDialog$1.class
 tables\ConceptosObraTable.class
 tables\AlmacenTable$1.class
+utils\DebugConsole$1.class
 ui\SeleccionarMaterialDialog.class
 ui\MenuFrame.class
 tables\HistorialMaterialTable.class
@@ -40,6 +42,8 @@ tables\MaterialObraTable$1.class
 ui\AlmacenDialog$1.class
 dto\ConceptoDTO.class
 ui\AbrirObraDialog$2.class
+utils\DebugConsole$2.class
+utils\DebugConsole$5.class
 tables\AlmacenTable.class
 tables\ConceptosObraTable$1.class
 tables\ConceptosTable$1.class
@@ -54,15 +58,19 @@ tables\MaterialesTable$2.class
 ui\NuevaObraDialog$1.class
 tables\MaterialConceptoTable$2.class
 tables\ObrasNombreFechaTable$1.class
+utils\DebugConsole$6.class
 tables\HistorialMaterialTable$3.class
 tables\MaterialesTable.class
 tables\MaterialObraTable$2.class
 dto\HistorialMaterialDTO.class
+utils\DebugConsole.class
 utils\HTTPManager.class
 ui\AddConceptoAObraDialog$1.class
+ui\MenuFrame$1.class
 ui\EditarConceptoDialog.class
 com\mycompany\consanasoftmenutest\ConsanaSoftMenuTest.class
 ui\SuministrarAlmacenDialog$1.class
+utils\DebugConsole$3.class
 secrets\Secret.class
 ui\NuevoMaterialDialog$2.class
 ui\SuministrarMaterialObraDialog.class
