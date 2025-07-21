@@ -117,7 +117,7 @@ public class ObraPanel extends JPanel {
     }
     
     private void suministrarMaterial(ActionEvent e) {
-        SuministrarMaterialObraDialog d = new SuministrarMaterialObraDialog(parentFrame, obra.getId(), materialesTable.getId());
+        SuministrarMaterialObraDialog d = new SuministrarMaterialObraDialog(parentFrame, obra.getId(), materialesTable.getId(), this);
         d.setVisible(true);
     }
     

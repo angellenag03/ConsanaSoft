@@ -33,7 +33,7 @@ public class SuministrarMaterialObraDialog extends JDialog {
     private final HTTPManager http = HTTPManager.getInstance();
     private final Gson gson = new Gson();
     
-    public SuministrarMaterialObraDialog(JFrame parent, String obraId, String materialId) {
+    public SuministrarMaterialObraDialog(JFrame parent, String obraId, String materialId, ObraPanel obraPanel) {
         super(parent, true);
         this.obraId = obraId;
         this.materialId = materialId;
