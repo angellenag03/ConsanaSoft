@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
     <artifactId>ConsanaSoftMenuTest</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -39,7 +39,6 @@
     </dependencies>
 
     <build>
-        <finalName>ConsanaSoft</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -47,14 +46,14 @@
         </resources>
         <plugins>
             <!-- Compilador con soporte para preview features (si usas Java 23) -->
+
+            <!-- Plugin para evitar generar el JAR normal -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
 
@@ -63,6 +62,8 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.6.0</version>
                 <configuration>
+                    <appendAssemblyId>false</appendAssemblyId> <!-- Esto evita el sufijo -jar-with-dependencies -->
+                    <finalName>ConsanaSoft</finalName> <!-- Nombre del archivo de salida -->
                     <archive>
                         <manifest>
                             <mainClass>com.mycompany.consanasoftmenutest.ConsanaSoftMenuTest</mainClass>
@@ -81,6 +82,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
             </plugin>
         </plugins>
     </build>

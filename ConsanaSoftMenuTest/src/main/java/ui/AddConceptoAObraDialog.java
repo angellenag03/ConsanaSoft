@@ -45,10 +45,10 @@ public class AddConceptoAObraDialog extends JDialog {
     private JFrame parentFrame;
     
     public AddConceptoAObraDialog(JFrame parentFrame, String clave, ObraPanel obraPanel) {
-        this.obraPanel = obraPanel;
-        this.obraId = clave;
-        gson = new Gson();
         super(parentFrame, "Añadir Concepto", true);
+        this.obraId = clave;
+        this.obraPanel = obraPanel;
+        this.gson = new Gson();
         initComponents();
         setupLayout();
         configurarComportamiento();
