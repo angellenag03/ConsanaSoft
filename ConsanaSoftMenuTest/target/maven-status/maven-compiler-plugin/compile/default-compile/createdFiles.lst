@@ -21,7 +21,6 @@ ui\SeleccionarMaterialDialog$1.class
 tables\MaterialObraTable.class
 tables\HistorialMaterialTable$1.class
 utils\ImageLoader.class
-apiclient\Main.class
 ui\MenuPanel$2.class
 dto\ConceptoObraDTO.class
 ui\SuministrarMaterialObraDialog$NumericDocumentFilter.class
@@ -30,7 +29,6 @@ ui\AbrirObraDialog$1.class
 tables\ConceptosObraTable.class
 tables\AlmacenTable$1.class
 ui\SeleccionarMaterialDialog.class
-apiclient\ApiClient.class
 ui\MenuFrame.class
 tables\HistorialMaterialTable.class
 ui\OpcionesMenuBar.class
@@ -66,5 +64,6 @@ ui\AddConceptoAObraDialog$1.class
 ui\EditarConceptoDialog.class
 com\mycompany\consanasoftmenutest\ConsanaSoftMenuTest.class
 ui\SuministrarAlmacenDialog$1.class
+secrets\Secret.class
 ui\NuevoMaterialDialog$2.class
 ui\SuministrarMaterialObraDialog.class
