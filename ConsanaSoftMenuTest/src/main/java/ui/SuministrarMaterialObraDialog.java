@@ -117,8 +117,8 @@ public class SuministrarMaterialObraDialog extends JDialog {
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, 
-                    "Error al suministrar: " + response, 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                    response, 
+                    "Atención", JOptionPane.INFORMATION_MESSAGE);
             }
             
         } catch (NumberFormatException ex) {

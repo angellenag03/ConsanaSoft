@@ -1,71 +1,94 @@
-
 package ui;
 
-/**
- *
- * @author pausa
- */
+import utils.ImageLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.time.LocalTime;
 
 public class MenuPanel extends JPanel {
-    private BufferedImage bannerImage;
+    private String nombreUsuario;
     private BufferedImage logoImage;
-    private String welcomeMessage = "Bienvenido a ConsanaSoft";
-    
-    public MenuPanel(Image banner, Image logo) {
-        // Configuración inicial del panel
+    private String saludo;
+    private String welcomeMessage;
+
+    public MenuPanel(String logoPath) {
         setLayout(new BorderLayout());
         
-        // Obtener las imágenes (asumo que tienes una clase ImageLoader con el método getImage)
-        bannerImage = (BufferedImage) banner;
-        logoImage = (BufferedImage) logo;
-        
-        // Configurar el banner en la parte superior
+        this.saludo = LocalTime.now().isBefore(LocalTime.NOON) ? "Buenos días, " : "Buenas tardes, ";
+        this.nombreUsuario = System.getProperty("user.name");
+        this.welcomeMessage = saludo+nombreUsuario;
+        // Cargar logo con ImageLoader
+        Image logo = ImageLoader.getImagen(logoPath);
+        logoImage = convertirABufferedImage(logo);
+
+        // Panel superior: banner con color + logo + texto
         JPanel bannerPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (bannerImage != null) {
-                    g.drawImage(bannerImage, 0, 0, getWidth(), getHeight(), this);
-                }
-            }
-        };
-        
-        // El banner ocupará 1/3 de la pantalla
-        bannerPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/3));
-        add(bannerPanel, BorderLayout.NORTH);
-        
-        // Panel para el contenido debajo del banner
-        JPanel contentPanel = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Dibujar el logo en la esquina superior izquierda
+
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+                // Fondo del banner
+                g2d.setColor(new Color(32, 33, 46));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+
+                int panelHeight = getHeight();
+
+                // Tamaño y posición del logo (125x125, un 25% más grande)
+                int logoWidth = 265;
+                int logoHeight = 265;
+                int logoX = 20;
+                int logoY = (panelHeight - logoHeight) / 2;
+
                 if (logoImage != null) {
-                    int logoWidth = 100; // Ajusta según necesites
-                    int logoHeight = 100; // Ajusta según necesites
-                    g.drawImage(logoImage, 20, 20, logoWidth, logoHeight, this);
+                    g2d.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight, this);
                 }
-                
-                // Dibujar el texto de bienvenida
-                g.setFont(new Font("Arial", Font.BOLD, 24));
-                g.setColor(Color.BLACK);
-                FontMetrics fm = g.getFontMetrics();
-                int textX = 130; // Ajusta según la posición del logo
-                int textY = 50 + fm.getAscent(); // Ajusta para alinear verticalmente con el logo
-                g.drawString(welcomeMessage, textX, textY);
+
+                // Texto de bienvenida
+                g2d.setFont(new Font("Arial", Font.BOLD, 24));
+                g2d.setColor(Color.WHITE);
+                FontMetrics fm = g2d.getFontMetrics();
+                int textX = logoX + logoWidth + 20;
+                int textY = (panelHeight - fm.getHeight()) / 2 + fm.getAscent();
+                g2d.drawString(welcomeMessage, textX, textY);
             }
         };
-        
+
+        bannerPanel.setPreferredSize(new Dimension(getWidth(), 150));
+        add(bannerPanel, BorderLayout.NORTH);
+
+        // Panel de contenido (vacío por ahora)
+        JPanel contentPanel = new JPanel();
+        contentPanel.setBackground(Color.WHITE);
         add(contentPanel, BorderLayout.CENTER);
     }
-    
+
+    private BufferedImage convertirABufferedImage(Image img) {
+        if (img instanceof BufferedImage) return (BufferedImage) img;
+        if (img == null) return null;
+
+        BufferedImage bimage = new BufferedImage(
+                img.getWidth(null),
+                img.getHeight(null),
+                BufferedImage.TYPE_INT_ARGB
+        );
+
+        Graphics2D g2d = bimage.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+
+        return bimage;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Fondo del panel (opcional)
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
     }

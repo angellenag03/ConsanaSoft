@@ -21,7 +21,6 @@ ui\SeleccionarMaterialDialog$1.class
 tables\MaterialObraTable.class
 tables\HistorialMaterialTable$1.class
 utils\ImageLoader.class
-ui\MenuPanel$2.class
 dto\ConceptoObraDTO.class
 ui\SuministrarMaterialObraDialog$NumericDocumentFilter.class
 dto\MaterialDTO.class

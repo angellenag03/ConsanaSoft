@@ -20,7 +20,6 @@ import tables.HistorialMaterialTable;
 
 public class ObraPanel extends JPanel {
     
-    private JButton salirbuButton;
     private JButton aniadirButton;
     private JButton suministrarButton;
     private ConceptosObraTable conceptosTable;
@@ -39,7 +38,6 @@ public class ObraPanel extends JPanel {
     }
     
     private void initComponents() {
-        salirbuButton = new JButton("Salir");
         aniadirButton = new JButton("Añadir");
         suministrarButton = new JButton("Suministrar");
         conceptosTable = new ConceptosObraTable(obra.getId());
@@ -65,7 +63,6 @@ public class ObraPanel extends JPanel {
         });
         
         // ActionListeners
-        salirbuButton.addActionListener(this::salir);
         aniadirButton.addActionListener(this::addConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
     }
@@ -76,7 +73,6 @@ public class ObraPanel extends JPanel {
         // Panel superior con botones principales
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(aniadirButton);
-        topPanel.add(salirbuButton);
         
         // Panel de botones para insumos
         JPanel insumosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

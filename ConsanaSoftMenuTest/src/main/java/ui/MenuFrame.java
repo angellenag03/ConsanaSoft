@@ -9,6 +9,7 @@ import utils.ImageLoader;
 public class MenuFrame extends JFrame {
 
     private final OpcionesMenuBar bar;
+    private final MenuPanel menuPanel = new MenuPanel("Logo sin fondo.png");
     
     public MenuFrame() throws HeadlessException {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -16,7 +17,8 @@ public class MenuFrame extends JFrame {
             this.setLocationRelativeTo(null);
             this.setTitle("ConsanaSoft");
             this.setIconImage(ImageLoader.getImagen("Logo.png"));
-//            cargarTema();
+            this.add(menuPanel);
+            cargarTema();
             
             bar = new OpcionesMenuBar(this);
             this.setJMenuBar(bar);

@@ -26,7 +26,7 @@ public class NuevoMaterialDialog extends JDialog {
     private JTextField cantidadField;
     private JComboBox<String> origenBox;
     private JTextField numeroDocumentoField;
-    private FechaPicker fechaRegistroPicker;
+    private FechaPicker fechaOrigenPicker;
     private JTextField referenciaField;
     private JComboBox<String> obraComboBox;
 
@@ -68,7 +68,7 @@ public class NuevoMaterialDialog extends JDialog {
         cantidadField = new JTextField(8);
         origenBox = new JComboBox<>(new String[]{"FACTURA", "VALE"});
         numeroDocumentoField = new JTextField(15);
-        fechaRegistroPicker = new FechaPicker();
+        fechaOrigenPicker = new FechaPicker();
         referenciaField = new JTextField(20);
         obraComboBox = new JComboBox<>();
 
@@ -128,7 +128,7 @@ public class NuevoMaterialDialog extends JDialog {
         datosPanel.add(numeroDocumentoLabel);
         datosPanel.add(numeroDocumentoField);
         datosPanel.add(fechaRegistroLabel);
-        datosPanel.add(fechaRegistroPicker);
+        datosPanel.add(fechaOrigenPicker);
         datosPanel.add(referenciaLabel);
         datosPanel.add(referenciaContainer);
 
@@ -217,11 +217,16 @@ public class NuevoMaterialDialog extends JDialog {
                 material.put("cantidad", cantidadField.getText().trim());
                 material.put("origen", origenBox.getSelectedItem());
                 material.put("numeroDocumento", numeroDocumentoField.getText().trim());
-                material.put("fechaRegistro", fechaRegistroPicker.getFecha());
+                material.put("fechaOrigen", fechaOrigenPicker.getFecha());
                 material.put("referencia", "VALE".equals(origenBox.getSelectedItem()) ? 
                     obraComboBox.getSelectedItem() : referenciaField.getText().trim());
 
                 http.executeRequest(HTTPManager.HttpMethod.POST, "/material", material);
+                
+                JOptionPane.showMessageDialog(this,
+                        "Material creado/suministrado con éxito!",
+                        "Atención", JOptionPane.INFORMATION_MESSAGE);
+                
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -246,7 +251,7 @@ public class NuevoMaterialDialog extends JDialog {
         numeroDocumentoLabel.setVisible(visible);
         numeroDocumentoField.setVisible(visible);
         fechaRegistroLabel.setVisible(visible);
-        fechaRegistroPicker.setVisible(visible);
+        fechaOrigenPicker.setVisible(visible);
         referenciaLabel.setVisible(visible);
         referenciaContainer.setVisible(visible);
     }
