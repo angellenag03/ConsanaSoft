@@ -1,7 +1,5 @@
-
 package tables;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import dto.MaterialOutputDTO;
@@ -10,43 +8,25 @@ import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import utils.HTTPManager;
 
-public class AlmacenTable extends JTable {
-    private final HTTPManager http = HTTPManager.getInstance();
-    private DefaultTableModel model;
-    private Gson gson;
+public class AlmacenTable extends BaseTable {
     
     public AlmacenTable() {
-        this.gson = new Gson();
-        model = new DefaultTableModel(
-                new Object[] {
-                    "ID",
-                    "Nombre",
-                    "Unidad",
-                    "Cantidad"
-                }, 0)
-        {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                        return false;
-                }
-
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                    return String.class;
-                }            
-        };
-        this.setModel(model);
-        this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            
+        super(); // Llamar al constructor de BaseTable
+        
+        // Inicializar el modelo con las columnas específicas
+        initializeModel(new String[] {
+            "ID",
+            "Nombre", 
+            "Unidad",
+            "Cantidad"
+        });
+        
         ajustarTabla();
         cargarDatosIniciales();
     }
     
+    @Override
     public void cargarDatosIniciales() {
         cargarDatos("/almacen/list");
     }
@@ -58,7 +38,7 @@ public class AlmacenTable extends JTable {
     
     private void cargarDatos(String endpoint) {
         try {
-            model.setRowCount(0);
+            clearTable(); // Usar método de la clase base
             String response = http.executeRequest(endpoint);
             Type historialMateriales = new TypeToken<List<MaterialOutputDTO>>(){}.getType();
             List<MaterialOutputDTO> materiales = gson.fromJson(response, historialMateriales);
@@ -72,21 +52,19 @@ public class AlmacenTable extends JTable {
                 });
             }
         } catch (JsonSyntaxException | IOException e) {
-            e.printStackTrace();
+            handleError(e, "cargarDatos AlmacenTable");
         }
     }
     
-    private void ajustarTabla() {
-        this.getColumnModel().getColumn(0).setMaxWidth(40);
-        this.getColumnModel().getColumn(2).setMaxWidth(50);
-        this.getColumnModel().getColumn(3).setMaxWidth(60);
+    @Override
+    protected void ajustarTabla() {
+        setColumnMaxWidth(0, 40);  // ID
+        setColumnMaxWidth(2, 50);  // Unidad
+        setColumnMaxWidth(3, 60);  // Cantidad
     }
     
     public Long getId() {
-        int selectedRow = this.getSelectedRow();
-        if (selectedRow >= 0) {
-            return (Long) this.getValueAt(selectedRow, 0); // Columna 1 es el nombre
-        }
-        return null;
+        Object value = getSelectedValue(0);
+        return value != null ? Long.valueOf(value.toString()) : null;
     }
 }

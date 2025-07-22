@@ -24,7 +24,7 @@ public class MenuPanel extends JPanel {
         Image logo = ImageLoader.getImagen(logoPath);
         logoImage = convertirABufferedImage(logo);
 
-        // Panel superior: banner con color + logo + texto
+        // Panel superior: banner con gradiente + logo + texto
         JPanel bannerPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -34,8 +34,11 @@ public class MenuPanel extends JPanel {
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-                // Fondo del banner
-                g2d.setColor(new Color(32, 33, 46));
+                // Crear gradiente para el fondo del banner
+                GradientPaint gradient = new GradientPaint(
+                        0, 0, new Color(32, 33, 46), 
+                        getWidth(), 0, new Color(60, 62, 90));
+                g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
 
                 int panelHeight = getHeight();

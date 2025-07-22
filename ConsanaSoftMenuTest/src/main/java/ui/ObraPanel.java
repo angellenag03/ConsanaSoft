@@ -5,7 +5,6 @@ import tables.ConceptosObraTable;
 import tables.MaterialObraTable;
 import utils.HTTPManager;
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -22,7 +21,8 @@ import tables.HistorialMaterialTable;
 
 public class ObraPanel extends JPanel {
     
-    private JButton salirButton;
+    private JButton salirButtonConceptos;
+    private JButton salirButtonInsumos;
     private JButton aniadirButton;
     private JButton suministrarButton;
     private ConceptosObraTable conceptosTable;
@@ -40,17 +40,18 @@ public class ObraPanel extends JPanel {
     }
     
     private void initComponents() {
-        salirButton = new JButton("Salir");
+        salirButtonConceptos = new JButton("Salir");
+        salirButtonInsumos = new JButton("Salir");
         aniadirButton = new JButton("Añadir Concepto");
         suministrarButton = new JButton("Suministrar");
         conceptosTable = new ConceptosObraTable(obra.getId());
         materialesTable = new MaterialObraTable(obra.getId());
         historialTable = new HistorialMaterialTable();
         
-        // Configurar tamaño preferido de las tablas (ajustado para disposición horizontal)
+        // Configurar tamaño preferido de las tablas
         conceptosTable.setPreferredScrollableViewportSize(new Dimension(800, 300));
-        materialesTable.setPreferredScrollableViewportSize(new Dimension(400, 300)); // Mitad del ancho
-        historialTable.setPreferredScrollableViewportSize(new Dimension(400, 300));  // Mitad del ancho
+        materialesTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
+        historialTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
         
         // Listener para la selección de materiales
         materialesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -59,14 +60,15 @@ public class ObraPanel extends JPanel {
                 if (!e.getValueIsAdjusting()) {
                     String materialNombre = materialesTable.getNombre();
                     if (materialNombre != null) {
-                        historialTable.cargarDatosNombreObra(obra.getId(),materialNombre);
+                        historialTable.cargarDatosNombreObra(obra.getId(), materialNombre);
                     }
                 }
             }
         });
         
         // ActionListeners
-        salirButton.addActionListener(this::regresarAlMenu);
+        salirButtonConceptos.addActionListener(this::regresarAlMenu);
+        salirButtonInsumos.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
     }
@@ -74,39 +76,44 @@ public class ObraPanel extends JPanel {
     private void setupUI() {
         this.setLayout(new BorderLayout());
         
-        // Panel superior con botones principales
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topPanel.add(aniadirButton);
+        // Panel de botones para conceptos (añadir y salir)
+        JPanel conceptosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        conceptosButtonPanel.add(aniadirButton);
+        conceptosButtonPanel.add(salirButtonConceptos);
         
-        // Panel de botones para insumos
+        // Panel de botones para insumos (suministrar y salir)
         JPanel insumosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         insumosButtonPanel.add(suministrarButton);
+        insumosButtonPanel.add(salirButtonInsumos);
         
-        // Panel dividido HORIZONTAL (Materiales a la izquierda, Historial a la derecha)
+        // Panel dividido HORIZONTAL para insumos
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(new JScrollPane(materialesTable));
         splitPane.setRightComponent(new JScrollPane(historialTable));
-        splitPane.setDividerLocation(0.5); // División al 50%
-        splitPane.setResizeWeight(0.5);    // Ambas partes se redimensionan igual
-        splitPane.setContinuousLayout(true); // Redibujo continuo al mover
+        splitPane.setDividerLocation(0.5);
+        splitPane.setResizeWeight(0.5);
+        splitPane.setContinuousLayout(true);
         
         // Panel contenedor para la pestaña de insumos
         JPanel insumosPanel = new JPanel(new BorderLayout());
         insumosPanel.add(insumosButtonPanel, BorderLayout.NORTH);
         insumosPanel.add(splitPane, BorderLayout.CENTER);
         
+        // Panel contenedor para la pestaña de conceptos
+        JPanel conceptosPanel = new JPanel(new BorderLayout());
+        conceptosPanel.add(conceptosButtonPanel, BorderLayout.NORTH);
+        conceptosPanel.add(new JScrollPane(conceptosTable), BorderLayout.CENTER);
+        
         // Panel de pestañas
         JTabbedPane tabbedPane = new JTabbedPane();
         
         // Pestaña de conceptos
-        JScrollPane conceptosScrollPane = new JScrollPane(conceptosTable);
-        tabbedPane.addTab("Conceptos", conceptosScrollPane);
+        tabbedPane.addTab("Conceptos", conceptosPanel);
         
-        // Pestaña de insumos (con división horizontal)
+        // Pestaña de insumos
         tabbedPane.addTab("Insumos", insumosPanel);
         
         // Agregar componentes al panel principal
-        this.add(topPanel, BorderLayout.NORTH);
         this.add(tabbedPane, BorderLayout.CENTER);
     }
     
@@ -134,5 +141,4 @@ public class ObraPanel extends JPanel {
             parentFrame.setTitle("ConsanaSoft");
         });
     }
-    
 }

@@ -1,51 +1,30 @@
-
 package tables;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import dto.ConceptoObraDTO;
-import utils.HTTPManager;
 import java.awt.Component;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-public class ConceptosObraTable extends JTable {
-    private final HTTPManager http = HTTPManager.getInstance();
-    private DefaultTableModel model;
+public class ConceptosObraTable extends BaseTable {
     private final String obraId;
-    private Gson gson;
     
     public ConceptosObraTable(String obraId) {
-        this.gson = new Gson();
+        super(); // Llamar al constructor de BaseTable
         this.obraId = obraId;
-        model = new DefaultTableModel(
-                new Object[] {
-                    "Partida",
-                    "Nombre",
-                    "Unidad",
-                    "Cantidad"
-                }, 0)
-        {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                        return false;
-                }
-
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                        return String.class;
-                }
-        };
-        this.setModel(model);
-        this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        // Inicializar el modelo con las columnas específicas
+        initializeModel(new String[] {
+            "Partida",
+            "Nombre",
+            "Unidad",
+            "Cantidad"
+        });
         
         ajustarTabla();
         cargarDatosIniciales();
@@ -64,6 +43,15 @@ public class ConceptosObraTable extends JTable {
             textArea.setFont(getFont());
             textArea.setSize(getColumnModel().getColumn(column).getWidth(), getRowHeight(row));
             
+            // Aplicar el color de fondo según si la columna es par o impar
+            if (!isRowSelected(row)) {
+                if (column % 2 == 0) { // Columna par
+                    textArea.setBackground(new java.awt.Color(245, 245, 245));
+                } else { // Columna impar
+                    textArea.setBackground(java.awt.Color.WHITE);
+                }
+            }
+            
             // Ajustar altura de la fila según el contenido
             int preferredHeight = textArea.getPreferredSize().height;
             if (getRowHeight(row) != preferredHeight) {
@@ -76,13 +64,14 @@ public class ConceptosObraTable extends JTable {
         return component;
     }
     
+    @Override
     public void cargarDatosIniciales() {
         cargarDatos("/concepto-obra/list?id="+obraId);
     }
     
     private void cargarDatos(String endpoint) {
         try {
-            model.setRowCount(0);
+            clearTable();
             String response = http.executeRequest(endpoint);
             Type obraListType = new TypeToken<List<ConceptoObraDTO>>(){}.getType();
             List<ConceptoObraDTO> conceptosObra = gson.fromJson(response, obraListType);
@@ -96,14 +85,15 @@ public class ConceptosObraTable extends JTable {
                 });
             }
         } catch (JsonSyntaxException | IOException e) {
-            e.printStackTrace();
+            handleError(e, "cargarDatos ConceptosObraTable");
         }
     }
     
-    private void ajustarTabla() {
-        this.getColumnModel().getColumn(0).setPreferredWidth(30);
-        this.getColumnModel().getColumn(1).setPreferredWidth(1000);
-        this.getColumnModel().getColumn(2).setPreferredWidth(20);
-        this.getColumnModel().getColumn(2).setPreferredWidth(20);
+    @Override
+    protected void ajustarTabla() {
+        setColumnPreferredWidth(0, 30);    // Partida
+        setColumnPreferredWidth(1, 1000);  // Nombre
+        setColumnPreferredWidth(2, 20);    // Unidad
+        setColumnPreferredWidth(3, 20);    // Cantidad
     }
 }

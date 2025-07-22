@@ -1,58 +1,40 @@
 package tables;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import dto.ConceptoDTO;
-import utils.HTTPManager;
+import java.awt.Component;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import java.awt.Component;
-import java.io.IOException;
-import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
 
-public class ConceptosTable extends JTable {
-    private final HTTPManager http = HTTPManager.getInstance();
-    private DefaultTableModel model;
-    private final Gson gson = new Gson();
+public class ConceptosTable extends BaseTable {
     
     public ConceptosTable() {
-        model = new DefaultTableModel(
-                new Object[]{
-                    "ID",
-                    "Clave",
-                    "Nombre",
-                    "Unidad"
-                }, 0)
-        {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                        return false;
-                }
-
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                        return String.class;
-                }
-        };
-        this.setModel(model);
-        this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ajustarTabla();
+        super(); // Llamar al constructor de BaseTable
         
+        // Inicializar el modelo con las columnas específicas
+        initializeModel(new String[]{
+            "ID",
+            "Clave",
+            "Nombre",
+            "Unidad"
+        });
+        
+        ajustarTabla();
         cargarDatosIniciales();
     }
     
-    // Renderer para manejar el texto con saltos de línea
+    // Override del renderer para manejar el texto con saltos de línea en la columna "nombre"
     @Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        // Primero obtener el componente base con colores alternados
         Component component = super.prepareRenderer(renderer, row, column);
         
         if (column == 2) { // Solo para la columna "nombre"
@@ -63,6 +45,15 @@ public class ConceptosTable extends JTable {
             textArea.setBorder(new EmptyBorder(4, 4, 4, 4));
             textArea.setFont(getFont());
             textArea.setSize(getColumnModel().getColumn(column).getWidth(), getRowHeight(row));
+            
+            // Aplicar el color de fondo según si la columna es par o impar
+            if (!isRowSelected(row)) {
+                if (column % 2 == 0) { // Columna par
+                    textArea.setBackground(new java.awt.Color(245, 245, 245));
+                } else { // Columna impar
+                    textArea.setBackground(java.awt.Color.WHITE);
+                }
+            }
             
             // Ajustar altura de la fila según el contenido
             int preferredHeight = textArea.getPreferredSize().height;
@@ -76,31 +67,31 @@ public class ConceptosTable extends JTable {
         return component;
     }
     
+    @Override
     public void cargarDatosIniciales() {
         cargarDatos("/concepto/list");
     }
     
     public void cargarDatosPorId(String id) {
         try {
-            model.setRowCount(0);
+            clearTable();
             String conceptoJson = http.executeRequest("/concepto/"+id);
             ConceptoDTO concepto = gson.fromJson(conceptoJson, ConceptoDTO.class);
             
-            model.setRowCount(0);
             model.addRow(new Object[]{
                 concepto.getId(),
-                concepto.getNombre(),
                 concepto.getClave(),
+                concepto.getNombre(),
                 concepto.getUnidad()
             });
         } catch (JsonSyntaxException | IOException e) {
             SwingUtilities.invokeLater(() -> {
-                        JOptionPane.showMessageDialog(null, 
-                            "Error al cargar el concepto: \n" + e.getMessage(), 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, 
+                    "Error al cargar el concepto: \n" + e.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             });
-            e.printStackTrace();
+            handleError(e, "cargarDatosPorId ConceptosTable");
         }
     }
     
@@ -116,12 +107,11 @@ public class ConceptosTable extends JTable {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                model.setRowCount(0);
+                clearTable();
                 try {
                     List<Map<String, String>> conceptos = gson.fromJson(
                         http.executeRequest(endpoint), 
                         new TypeToken<List<Map<String, String>>>(){}.getType());
-                    model.setRowCount(0);
                     
                     for (Map<String, String> concepto : conceptos) {
                         model.addRow(new Object[]{
@@ -146,19 +136,15 @@ public class ConceptosTable extends JTable {
     }
     
     public String getSelectedConceptoId() {
-        int selectedRow = this.getSelectedRow();
-        if (selectedRow >= 0) {
-            return (String) model.getValueAt(selectedRow, 0);
-        }
-        return null;
+        return getSelectedId(); // Usar método de la clase base
     }
     
-    private void ajustarTabla() {
-        this.getColumnModel().getColumn(0).setMaxWidth(40);
-        this.getColumnModel().getColumn(1).setMinWidth(120);
-        this.getColumnModel().getColumn(1).setMaxWidth(120);
-//        this.getColumnModel().getColumn(2).setMaxWidth(420); // Más ancho para nombres largos
-        this.getColumnModel().getColumn(3).setMaxWidth(60);
+    @Override
+    protected void ajustarTabla() {
+        setColumnMaxWidth(0, 40);           // ID
+        setColumnMinWidth(1, 120);          // Clave - mínimo
+        setColumnMaxWidth(1, 120);          // Clave - máximo
+        setColumnMaxWidth(3, 60);           // Unidad
         
         // Altura inicial basada en la fuente
         this.setRowHeight(this.getFontMetrics(this.getFont()).getHeight() + 4);

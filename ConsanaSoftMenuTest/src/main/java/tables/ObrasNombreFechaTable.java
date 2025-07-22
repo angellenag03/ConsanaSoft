@@ -1,76 +1,51 @@
-
 package tables;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import dto.ObraDTO;
-import javax.swing.JTable;
-import utils.HTTPManager;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 
-public class ObrasNombreFechaTable extends JTable{
-    
-    private HTTPManager http = HTTPManager.getInstance();
-    private DefaultTableModel model;
-    private Gson gson;
+public class ObrasNombreFechaTable extends BaseTable {
     
     public ObrasNombreFechaTable() {
-        this.gson = new Gson();
-        model = new DefaultTableModel(
-                new Object[]{
-                    "Número de Obra", 
-                    "Nombre", 
-                    "Ú. Fecha de Modificación"
-                }, 0)
-        {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                    return false;
-            }
-
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                // Todos los valores son String
-                return String.class;
-            }
-        };
-        this.setModel(model);
-        this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        super(); // Llamar al constructor de BaseTable
+        
+        // Inicializar el modelo con las columnas específicas
+        initializeModel(new String[]{
+            "Número de Obra", 
+            "Nombre", 
+            "Ú. Fecha de Modificación"
+        });
+        
         ajustarTabla();
-
-        // este método se cargará con estos datos primero
         cargarDatosIniciales();
         this.repaint();
     }
     
+    @Override
     public void cargarDatosIniciales() {
-            cargarDatos("/obra/list");
+        cargarDatos("/obra/list");
     }
     
     public void cargarDatosPorID(String id) {
-            cargarDatos("/obra/list?id="+id);
+        cargarDatos("/obra/list?id="+id);
     }
     
     public void cargarDatosPorNombre(String nombre) {
-            cargarDatos("/obra/list?nombre="+nombre);
+        cargarDatos("/obra/list?nombre="+nombre);
     }
     
     /**
-     * la idea oiriginal era tener varios métodos porque habrán querys de
-     * busqueda por lo que considero que sería mejor tener un método
+     * La idea original era tener varios métodos porque habrán querys de
+     * búsqueda por lo que considero que sería mejor tener un método
      * universal y solo introducir la solicitud directamente en el método
      * @param endpoint 
-    */
+     */
     public void cargarDatos(String endpoint) {
         try {
-            model.setRowCount(0);
+            clearTable();
             String response = http.executeRequest(endpoint);
             Type obraListType = new TypeToken<List<ObraDTO>>(){}.getType();
             List<ObraDTO> obras = gson.fromJson(response, obraListType);
@@ -83,22 +58,19 @@ public class ObrasNombreFechaTable extends JTable{
                 });
             }
         } catch (JsonSyntaxException | IOException e) {
-            e.printStackTrace();
+            handleError(e, "cargarDatos ObrasNombreFechaTable");
         }
     }
+    
     // Método para obtener el ID de la obra seleccionada
     public String getSelectedObraId() {
-        int selectedRow = this.getSelectedRow();
-        if (selectedRow >= 0) {
-            return (String) model.getValueAt(selectedRow, 0); // Columna 0 es el ID
-        }
-        return null;
+        return getSelectedId(); // Usar método de la clase base
     }
     
-    private void ajustarTabla() {
-        this.getColumnModel().getColumn(0).setPreferredWidth(100);
-        this.getColumnModel().getColumn(1).setPreferredWidth(280);
-        this.getColumnModel().getColumn(2).setPreferredWidth(150);
+    @Override
+    protected void ajustarTabla() {
+        setColumnPreferredWidth(0, 100);  // Número de Obra
+        setColumnPreferredWidth(1, 280);  // Nombre
+        setColumnPreferredWidth(2, 150);  // Ú. Fecha de Modificación
     }
-    
 }
