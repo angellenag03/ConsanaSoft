@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -79,8 +80,18 @@ public class HistorialMaterialTable extends JTable {
     public void cargarDatosNombre(String nombre) {
         try {
             nombre = URLEncoder.encode(nombre, "UTF-8");
-            System.out.println("/historial/list?nombre="+nombre);
             cargarDatos("/historial/list?nombre="+nombre);
+            packColumns(); // Ajustar el ancho de las columnas después de cargar los datos
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+    
+    public void cargarDatosNombreObra(String obraId, String nombre) {
+        try {
+            nombre = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
+            obraId = URLEncoder.encode(obraId, StandardCharsets.UTF_8);
+            cargarDatos("/historial/list?obraId="+obraId+"&nombre="+nombre);
             packColumns(); // Ajustar el ancho de las columnas después de cargar los datos
         } catch (Exception e) {
             e.getMessage();

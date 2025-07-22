@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import dto.MaterialDTO;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -19,6 +20,18 @@ public class MaterialesTable extends JTable {
     private Gson gson;
     
     public MaterialesTable() {
+        initComponents();
+        cargarDatosIniciales();
+        ajustarTabla();
+    }
+    
+    public MaterialesTable(String query) {
+        initComponents();
+        cargarDatosPorNombre(query);
+        ajustarTabla();
+    }
+    
+    private void initComponents() {
         this.gson = new Gson();
         model = new DefaultTableModel(
                 new Object[] {
@@ -39,13 +52,15 @@ public class MaterialesTable extends JTable {
         };
         this.setModel(model);
         this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        cargarDatosIniciales();
-        ajustarTabla();
     }
     
     public void cargarDatosPorNombre(String nombre) {
-        cargarDatos("/material/list?nombre="+nombre);
+        try {
+            nombre = URLEncoder.encode(nombre, "UTF-8");
+            cargarDatos("/material/list?nombre="+nombre);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
     
     public void cargarDatosIniciales() {

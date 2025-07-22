@@ -37,7 +37,7 @@ public class OpcionesMenuBar extends JMenuBar {
     public OpcionesMenuBar(JFrame parentFrame) {
         this.parentFrame = parentFrame;
         menuObra = new JMenu("Obra");
-        menuMaterial = new JMenu("Material");
+        menuMaterial = new JMenu("Almacén");
         menuAcerca = new JMenu("Acerca de");
         initComponents();
         this.add(menuObra);
@@ -54,8 +54,8 @@ public class OpcionesMenuBar extends JMenuBar {
         abrirObraReciente = new JMenuItem("Abrir Obra Reciente");
         
         // MATERIALES
-        ingresarMaterial = new JMenuItem("Ingresar Material");
-        revisarAlmacen = new JMenuItem("Revisar Almacen");
+        ingresarMaterial = new JMenuItem("Ingresar Material al Almacén");
+        revisarAlmacen = new JMenuItem("Revisar Almacén");
         
         acercaDe = new JMenuItem("Acerca de");
         

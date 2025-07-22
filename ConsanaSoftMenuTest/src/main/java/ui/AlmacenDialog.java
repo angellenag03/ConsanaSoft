@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -15,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import tables.AlmacenTable;
+import tables.HistorialMaterialTable;
 
 public class AlmacenDialog extends JDialog {
     private JLabel tituloLabel;
@@ -28,6 +31,7 @@ public class AlmacenDialog extends JDialog {
 
     public AlmacenDialog(JFrame parentFrame) {
         super(parentFrame, "Visualización de Almacén", true);
+        this.parentFrame = parentFrame;
         initComponents();
         setupLayout();
         configurarComportamiento();
@@ -101,6 +105,33 @@ public class AlmacenDialog extends JDialog {
                 suministrarButton.setEnabled(true);
             }
         });
+        
+        // Agregar MouseListener para el doble clic
+        almacenTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = almacenTable.getSelectedRow();
+                    if (row >= 0) {
+                        String nombreMaterial = (String) almacenTable.getValueAt(row, 1); // Columna 1 es el nombre
+                        mostrarHistorialMaterial(nombreMaterial);
+                    }
+                }
+            }
+        });
+    }
+    
+    private void mostrarHistorialMaterial(String nombreMaterial) {
+        JDialog historialDialog = new JDialog(this, "Historial del Material: " + nombreMaterial, true);
+        HistorialMaterialTable historialTable = new HistorialMaterialTable();
+        historialTable.cargarDatosNombre(nombreMaterial);
+        
+        JScrollPane scrollPane = new JScrollPane(historialTable);
+        historialDialog.add(scrollPane);
+        
+        historialDialog.setSize(800, 400);
+        historialDialog.setLocationRelativeTo(this);
+        historialDialog.setVisible(true);
     }
     
     private void realizarBusqueda() {
@@ -119,5 +150,4 @@ public class AlmacenDialog extends JDialog {
         
         almacenTable.cargarDatosIniciales();
     }
-    
 }

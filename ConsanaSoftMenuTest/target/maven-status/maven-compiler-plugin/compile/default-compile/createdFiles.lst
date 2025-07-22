@@ -65,6 +65,7 @@ tables\MaterialObraTable$2.class
 dto\HistorialMaterialDTO.class
 utils\DebugConsole.class
 utils\HTTPManager.class
+ui\AlmacenDialog$2.class
 ui\AddConceptoAObraDialog$1.class
 ui\MenuFrame$1.class
 ui\EditarConceptoDialog.class

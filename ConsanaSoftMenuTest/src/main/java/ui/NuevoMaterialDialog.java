@@ -37,6 +37,7 @@ public class NuevoMaterialDialog extends JDialog {
     private JButton cancelarButton;
     private JButton seleccionarExistenteButton;
 
+    private JFrame parentFrame;
     private final HTTPManager http = HTTPManager.getInstance();
     private final Gson gson = new Gson();
 
@@ -162,6 +163,8 @@ public class NuevoMaterialDialog extends JDialog {
             }
         });
 
+        nombreField.addActionListener(this::buscarExistente);
+        
         seleccionarExistenteButton.addActionListener(e -> {
             SeleccionarMaterialDialog dialog = new SeleccionarMaterialDialog((JFrame) getParent());
             dialog.setVisible(true);
@@ -256,4 +259,13 @@ public class NuevoMaterialDialog extends JDialog {
         referenciaContainer.setVisible(visible);
     }
     
+    private void buscarExistente(ActionEvent e) {
+        SeleccionarMaterialDialog dialog = new SeleccionarMaterialDialog(parentFrame, nombreField.getText());
+        dialog.setVisible(true);
+        
+        if (dialog.getNombreSeleccionado() != null) {
+                nombreField.setText(dialog.getNombreSeleccionado());
+                unidadField.setText(dialog.getUnidadSeleccionada());
+        }
+    }
 }

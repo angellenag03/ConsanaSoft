@@ -18,6 +18,19 @@ public class SeleccionarMaterialDialog extends JDialog {
     public SeleccionarMaterialDialog(JFrame parentFrame) {
         super(parentFrame, "Seleccionar Material Existente", true);
         initComponents();
+        materialesTable = new MaterialesTable();
+        setupLayout();
+        configurarComportamiento();
+        
+        this.setSize(500, 400);
+        this.setLocationRelativeTo(parentFrame);
+    }
+
+    // abre directamente buscando coincidencias
+    public SeleccionarMaterialDialog(JFrame parentFrame, String query) {
+        super(parentFrame, "Seleccionar Material Existente", true);
+        initComponents();
+        materialesTable = new MaterialesTable(query);
         setupLayout();
         configurarComportamiento();
         
@@ -26,7 +39,6 @@ public class SeleccionarMaterialDialog extends JDialog {
     }
     
     private void initComponents() {
-        materialesTable = new MaterialesTable();
         buscarField = new JTextField(20);
         buscarButton = new JButton("Buscar");
         seleccionarButton = new JButton("Seleccionar");
@@ -61,14 +73,8 @@ public class SeleccionarMaterialDialog extends JDialog {
     
     private void configurarComportamiento() {
         // Buscar materiales por nombre
-        buscarButton.addActionListener(e -> {
-            String nombre = buscarField.getText().trim();
-            if (!nombre.isEmpty()) {
-                materialesTable.cargarDatosPorNombre(nombre);
-            } else {
-                materialesTable.cargarDatosIniciales();
-            }
-        });
+        buscarButton.addActionListener(this::buscar);
+        buscarField.addActionListener(this::buscar);
         
         // Seleccionar material
         seleccionarButton.addActionListener(e -> {
@@ -97,6 +103,15 @@ public class SeleccionarMaterialDialog extends JDialog {
                 }
             }
         });
+    }
+    
+    private void buscar(ActionEvent e) {
+        String nombre = buscarField.getText().trim();
+        if (!nombre.isEmpty()) {
+            materialesTable.cargarDatosPorNombre(nombre);
+        } else {
+            materialesTable.cargarDatosIniciales();
+        }
     }
     
     // Getters para obtener los datos seleccionados

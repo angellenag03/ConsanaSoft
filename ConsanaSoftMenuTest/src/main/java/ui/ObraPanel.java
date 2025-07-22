@@ -5,6 +5,7 @@ import tables.ConceptosObraTable;
 import tables.MaterialObraTable;
 import utils.HTTPManager;
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -14,12 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import tables.HistorialMaterialTable;
 
 public class ObraPanel extends JPanel {
     
+    private JButton salirButton;
     private JButton aniadirButton;
     private JButton suministrarButton;
     private ConceptosObraTable conceptosTable;
@@ -27,7 +30,6 @@ public class ObraPanel extends JPanel {
     private HistorialMaterialTable historialTable;
     private JFrame parentFrame;
     
-    private final HTTPManager http = HTTPManager.getInstance();
     private final ObraDTO obra;
     
     public ObraPanel(JFrame parentFrame, ObraDTO obra) {
@@ -38,7 +40,8 @@ public class ObraPanel extends JPanel {
     }
     
     private void initComponents() {
-        aniadirButton = new JButton("Añadir");
+        salirButton = new JButton("Salir");
+        aniadirButton = new JButton("Añadir Concepto");
         suministrarButton = new JButton("Suministrar");
         conceptosTable = new ConceptosObraTable(obra.getId());
         materialesTable = new MaterialObraTable(obra.getId());
@@ -56,13 +59,14 @@ public class ObraPanel extends JPanel {
                 if (!e.getValueIsAdjusting()) {
                     String materialNombre = materialesTable.getNombre();
                     if (materialNombre != null) {
-                        historialTable.cargarDatosNombre(materialNombre);
+                        historialTable.cargarDatosNombreObra(obra.getId(),materialNombre);
                     }
                 }
             }
         });
         
         // ActionListeners
+        salirButton.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
     }
@@ -106,11 +110,6 @@ public class ObraPanel extends JPanel {
         this.add(tabbedPane, BorderLayout.CENTER);
     }
     
-    // Métodos de acción (sin cambios)
-    private void salir(ActionEvent e) {
-        System.out.println("Volver al menú principal");
-    }
-    
     private void addConcepto(ActionEvent e) {
         AddConceptoAObraDialog d = new AddConceptoAObraDialog(parentFrame, obra.getId(), this);
         d.setVisible(true);
@@ -121,9 +120,19 @@ public class ObraPanel extends JPanel {
         d.setVisible(true);
     }
     
-    public void actualizarTablaConceptos() {
+    public void actualizarTablas() {
         conceptosTable.cargarDatosIniciales();
         materialesTable.cargarDatosIniciales();
+    }
+    
+    private void regresarAlMenu(ActionEvent e) {
+        SwingUtilities.invokeLater(() -> {
+            parentFrame.getContentPane().removeAll();
+            parentFrame.add(new MenuPanel());
+            parentFrame.revalidate();
+            parentFrame.repaint();
+            parentFrame.setTitle("ConsanaSoft");
+        });
     }
     
 }

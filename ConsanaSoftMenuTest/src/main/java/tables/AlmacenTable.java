@@ -4,10 +4,11 @@ package tables;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import dto.ConceptoObraDTO;
 import dto.MaterialOutputDTO;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -51,6 +52,7 @@ public class AlmacenTable extends JTable {
     }
     
     public void cargarDatosNombre(String nombre) {
+        nombre = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
         cargarDatos("/almacen/list?nombre="+nombre);
     }
     

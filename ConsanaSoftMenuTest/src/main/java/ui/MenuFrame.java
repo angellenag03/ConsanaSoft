@@ -7,7 +7,7 @@ import utils.ImageLoader;
 
 public class MenuFrame extends JFrame {
     private final OpcionesMenuBar bar;
-    private final MenuPanel menuPanel = new MenuPanel("Logo sin fondo.png");
+    private final MenuPanel menuPanel = new MenuPanel();
     
     public MenuFrame() throws HeadlessException {
         // Configuración inicial del frame

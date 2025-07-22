@@ -12,8 +12,9 @@ public class MenuPanel extends JPanel {
     private BufferedImage logoImage;
     private String saludo;
     private String welcomeMessage;
+    private final String logoPath = "Logo sin fondo.png";
 
-    public MenuPanel(String logoPath) {
+    public MenuPanel() {
         setLayout(new BorderLayout());
         
         this.saludo = LocalTime.now().isBefore(LocalTime.NOON) ? "Buenos días, " : "Buenas tardes, ";
