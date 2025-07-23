@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import tables.HistorialMaterialTable;
+import utils.ExcelGenerator;
 
 public class ObraPanel extends JPanel {
     
@@ -25,6 +26,8 @@ public class ObraPanel extends JPanel {
     private JButton salirButtonInsumos;
     private JButton aniadirButton;
     private JButton suministrarButton;
+    private JButton exportarButton;
+    
     private ConceptosObraTable conceptosTable;
     private MaterialObraTable materialesTable;
     private HistorialMaterialTable historialTable;
@@ -44,6 +47,7 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos = new JButton("Salir");
         aniadirButton = new JButton("Añadir Concepto");
         suministrarButton = new JButton("Suministrar");
+        exportarButton = new JButton("Exportar");
         conceptosTable = new ConceptosObraTable(obra.getId());
         materialesTable = new MaterialObraTable(obra.getId());
         historialTable = new HistorialMaterialTable();
@@ -71,6 +75,8 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
+        exportarButton.addActionListener(e -> 
+                ExcelGenerator.getInstance().exportJTablesToExcel(obra.getNombre(), new int[]{1}, materialesTable));
     }
     
     private void setupUI() {
@@ -85,6 +91,7 @@ public class ObraPanel extends JPanel {
         JPanel insumosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         insumosButtonPanel.add(suministrarButton);
         insumosButtonPanel.add(salirButtonInsumos);
+        insumosButtonPanel.add(exportarButton);
         
         // Panel dividido HORIZONTAL para insumos
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

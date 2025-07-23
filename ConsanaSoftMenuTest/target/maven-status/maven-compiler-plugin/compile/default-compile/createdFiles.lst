@@ -28,6 +28,7 @@ ui\AbrirObraDialog$1.class
 tables\ConceptosObraTable.class
 tables\AlmacenTable$1.class
 utils\DebugConsole$1.class
+utils\ExcelGenerator.class
 ui\SeleccionarMaterialDialog.class
 ui\MenuFrame.class
 tables\HistorialMaterialTable.class
