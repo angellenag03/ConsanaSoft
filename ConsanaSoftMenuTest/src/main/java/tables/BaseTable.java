@@ -26,7 +26,7 @@ public abstract class BaseTable extends JTable {
     
     // Configuración de colores
     private static final Color COLOR_FILA_IMPAR = Color.WHITE;
-    private static final Color COLOR_FILA_PAR = new Color(245, 245, 245);
+    private static final Color COLOR_FILA_PAR = new Color(245, 245, 255);
     private static final Color COLOR_ENCABEZADO = new Color(205, 205, 205);
     private static final Color COLOR_TEXTO_ENCABEZADO = Color.BLACK;
     private static final Color COLOR_BORDE = new Color(220, 220, 220);
