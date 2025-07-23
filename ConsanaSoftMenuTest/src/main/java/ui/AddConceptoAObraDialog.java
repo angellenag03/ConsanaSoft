@@ -79,7 +79,7 @@ public class AddConceptoAObraDialog extends JDialog {
         buscarLabel = new JLabel("Buscar por:");
         buscarField = new JTextField(25);
         buscarButton = new JButton("Buscar");
-        tipoBusquedaCombo = new JComboBox<>(new String[]{"ID", "Clave", "Nombre"});
+        tipoBusquedaCombo = new JComboBox<>(new String[]{"Nombre", "Clave", "ID"});
         cantidadField = new JTextField(6);
         
         infoPanel.add(idLabel);
@@ -255,8 +255,8 @@ public class AddConceptoAObraDialog extends JDialog {
     }
     
     private void editarConcepto(ActionEvent e) {
-        EditarConceptoDialog ecd = new EditarConceptoDialog(getConcepto(), parentFrame);
-        ecd.setVisible(true);
+        EditarConceptoDialog dialog = new EditarConceptoDialog(getConcepto(), parentFrame);
+        dialog.setVisible(true);
     }
     
     private ConceptoDTO getConcepto() {

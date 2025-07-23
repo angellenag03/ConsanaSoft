@@ -12,7 +12,6 @@ public class ObrasNombreFechaTable extends BaseTable {
     public ObrasNombreFechaTable() {
         super(); // Llamar al constructor de BaseTable
         
-        // Inicializar el modelo con las columnas específicas
         initializeModel(new String[]{
             "Número de Obra", 
             "Nombre", 

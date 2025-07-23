@@ -214,14 +214,17 @@ public class NuevoMaterialDialog extends JDialog {
     private void onGuardar(ActionEvent e) {
         try {
             if (validarCampos()) {
+                
+                String origen = (String) origenBox.getSelectedItem();
+                
                 HashMap<String, Object> material = new HashMap<>();
                 material.put("nombre", nombreField.getText().trim());
                 material.put("unidad", unidadField.getText().trim());
                 material.put("cantidad", cantidadField.getText().trim());
-                material.put("origen", origenBox.getSelectedItem());
+                material.put("origen", "VALE".equals(origen) ? "VALE_DE_ENTRADA" : origen);
                 material.put("numeroDocumento", numeroDocumentoField.getText().trim());
                 material.put("fechaOrigen", fechaOrigenPicker.getFecha());
-                material.put("referencia", "VALE".equals(origenBox.getSelectedItem()) ? 
+                material.put("referencia", "VALE".equals(origen) ? 
                     obraComboBox.getSelectedItem() : referenciaField.getText().trim());
 
                 http.executeRequest(HTTPManager.HttpMethod.POST, "/material", material);

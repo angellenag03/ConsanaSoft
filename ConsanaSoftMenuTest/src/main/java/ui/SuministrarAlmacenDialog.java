@@ -172,13 +172,16 @@ public class SuministrarAlmacenDialog extends JDialog {
 
     private void onGuardar(ActionEvent e) {
         try {
+            
+            String origen = (String) origenBox.getSelectedItem();
+            
             if (validarCampos()) {
                 HashMap<String, Object> suministro = new HashMap<>();
                 suministro.put("materialId", materialId);
                 suministro.put("cantidad", Double.parseDouble(cantidadField.getText().trim()));
                 suministro.put("numeroDocumento", numeroDocumentoField.getText().trim());
                 suministro.put("referencia", referenciaField.getText().trim());
-                suministro.put("origen", origenBox.getSelectedItem());
+                suministro.put("origen", "VALE".equals(origen) ? "VALE_DE_ENTRADA" : origen);
                 suministro.put("fechaOrigen", fechaOrigenPicker.getFecha());
 
                 http.executeRequest(HTTPManager.HttpMethod.POST, "/almacen/suministrar", suministro);
