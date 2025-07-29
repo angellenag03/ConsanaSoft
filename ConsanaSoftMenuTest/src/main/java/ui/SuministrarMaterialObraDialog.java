@@ -125,6 +125,7 @@ public class SuministrarMaterialObraDialog extends JDialog {
             
             
             obraPanel.actualizarTablas();
+            dispose();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, 
                 "Ingrese solo números enteros", 

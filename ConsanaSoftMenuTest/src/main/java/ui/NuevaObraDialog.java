@@ -168,7 +168,6 @@ public class NuevaObraDialog extends JDialog {
                     parentFrame.add(new ObraPanel(parentFrame, obra));
                     parentFrame.revalidate();
                     parentFrame.repaint();
-                    parentFrame.setTitle("ConsanaSoft: "+obra.getNombre());
                 });
                 
             } catch (IOException ex) {

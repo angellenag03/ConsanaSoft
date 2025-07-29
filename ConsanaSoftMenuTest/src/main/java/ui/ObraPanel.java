@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -26,6 +27,7 @@ public class ObraPanel extends JPanel {
     private JButton salirButtonInsumos;
     private JButton aniadirButton;
     private JButton suministrarButton;
+    private JButton instalarButton;
     private JButton exportarButton;
     
     private ConceptosObraTable conceptosTable;
@@ -40,6 +42,7 @@ public class ObraPanel extends JPanel {
         this.parentFrame = parentFrame;
         initComponents();
         setupUI();
+        this.parentFrame.setTitle("ConsanaSoft: "+obra.getId()+" "+obra.getNombre());
     }
     
     private void initComponents() {
@@ -47,6 +50,7 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos = new JButton("Salir");
         aniadirButton = new JButton("Añadir Concepto");
         suministrarButton = new JButton("Suministrar");
+        instalarButton = new JButton("Instalar");
         exportarButton = new JButton("Exportar");
         conceptosTable = new ConceptosObraTable(obra.getId());
         materialesTable = new MaterialObraTable(obra.getId());
@@ -75,8 +79,10 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
+        instalarButton.addActionListener(this::instalarMaterial);
         exportarButton.addActionListener(e -> 
                 ExcelGenerator.getInstance().exportJTablesToExcel(obra.getNombre(), new int[]{1}, materialesTable));
+        
     }
     
     private void setupUI() {
@@ -90,8 +96,9 @@ public class ObraPanel extends JPanel {
         // Panel de botones para insumos (suministrar y salir)
         JPanel insumosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         insumosButtonPanel.add(suministrarButton);
-        insumosButtonPanel.add(salirButtonInsumos);
+        insumosButtonPanel.add(instalarButton);
         insumosButtonPanel.add(exportarButton);
+        insumosButtonPanel.add(salirButtonInsumos);
         
         // Panel dividido HORIZONTAL para insumos
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -130,8 +137,22 @@ public class ObraPanel extends JPanel {
     }
     
     private void suministrarMaterial(ActionEvent e) {
-        SuministrarMaterialObraDialog d = new SuministrarMaterialObraDialog(parentFrame, obra.getId(), materialesTable.getId(), this);
-        d.setVisible(true);
+        String materialId = materialesTable.getId();
+        System.out.println(materialId);
+        if (materialId==null) {
+            JOptionPane.showMessageDialog(this, 
+                        "Favor de seleccionar un material", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            
+        } else {
+            SuministrarMaterialObraDialog dialog = new SuministrarMaterialObraDialog(parentFrame, obra.getId(), materialId, this);
+            dialog.setVisible(true);
+        }
+    }
+    
+    private void instalarMaterial(ActionEvent e) {
+        InstalarMaterialObraDialog dialog = new InstalarMaterialObraDialog(parentFrame, obra.getId(), materialesTable.getId(), this);
+        dialog.setVisible(true);
     }
     
     public void actualizarTablas() {

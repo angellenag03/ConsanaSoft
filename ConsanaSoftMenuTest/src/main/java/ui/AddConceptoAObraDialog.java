@@ -237,7 +237,8 @@ public class AddConceptoAObraDialog extends JDialog {
                     HTTPManager.HttpMethod.PATCH,
                     "/concepto-obra/upsert", conceptoObra);
             
-            JOptionPane.showMessageDialog(this, "Concepto añadido correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            String msg = cantidad > 1 ? "Conceptos añadidos con éxito!" : "Concepto añadido con éxito!";
+            JOptionPane.showMessageDialog(this, msg, "Éxito", JOptionPane.INFORMATION_MESSAGE);
             obraPanel.actualizarTablas();
             dispose();
             

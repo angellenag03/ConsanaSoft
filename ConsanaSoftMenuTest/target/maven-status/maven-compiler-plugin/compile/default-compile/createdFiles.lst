@@ -12,6 +12,7 @@ utils\HTTPManager$HttpMethod.class
 ui\AddConceptoAObraDialog.class
 ui\NuevaObraDialog.class
 utils\DebugConsole$4.class
+ui\AlmacenDialog$3.class
 ui\AddConceptoAObraDialog$2.class
 dto\MaterialConceptoDTO.class
 ui\MenuPanel$1.class
@@ -30,11 +31,13 @@ tables\AlmacenTable$1.class
 utils\DebugConsole$1.class
 utils\ExcelGenerator.class
 ui\SeleccionarMaterialDialog.class
+dto\ExistenciaDTO.class
 ui\MenuFrame.class
 tables\HistorialMaterialTable.class
 ui\OpcionesMenuBar.class
 tables\ObrasNombreFechaTable.class
 utils\HTTPManager$HttpPatch.class
+tables\ExistenciasTable.class
 tables\MaterialObraTable$1.class
 ui\AlmacenDialog$1.class
 dto\ConceptoDTO.class
@@ -45,6 +48,7 @@ tables\BaseTable$AlternatingRowRenderer.class
 tables\AlmacenTable.class
 tables\ConceptosObraTable$1.class
 tables\ConceptosTable$1.class
+ui\InstalarMaterialObraDialog$1.class
 ui\NuevoMaterialDialog$1.class
 ui\MenuPanel.class
 ui\ObraPanel$1.class
@@ -52,8 +56,10 @@ dto\MaterialOutputDTO.class
 ui\AlmacenDialog.class
 ui\ObraPanel.class
 ui\SuministrarMaterialObraDialog$1.class
+tables\ExistenciasTable$1.class
 ui\NuevaObraDialog$1.class
 tables\ObrasNombreFechaTable$1.class
+ui\InstalarMaterialObraDialog.class
 utils\DebugConsole$6.class
 tables\MaterialesTable.class
 dto\HistorialMaterialDTO.class
@@ -64,6 +70,7 @@ tables\BaseTable.class
 ui\AddConceptoAObraDialog$1.class
 ui\MenuFrame$1.class
 ui\EditarConceptoDialog.class
+ui\InstalarMaterialObraDialog$NumericDocumentFilter.class
 com\mycompany\consanasoftmenutest\ConsanaSoftMenuTest.class
 ui\SuministrarAlmacenDialog$1.class
 utils\DebugConsole$3.class

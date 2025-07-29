@@ -19,9 +19,11 @@ public class MaterialObraTable extends BaseTable {
             "Clave",
             "Nombre",
             "Unidad",
-            "Requerido",
-            "Suministrado",
-            "Pendiente"
+            "Req.",
+            "Sumin.",
+            "Por Sum.",
+            "Inst.",
+            "Exist."
         });
         
         ajustarTabla();
@@ -47,7 +49,9 @@ public class MaterialObraTable extends BaseTable {
                     m.getUnidad(),
                     m.getCantidadRequerida(),
                     m.getCantidadSuministrada(),
-                    m.getCantidadPendiente()
+                    m.getCantidadPendiente(),
+                    m.getCantidadInstalada(),
+                    m.getCantidadExistente()
                 });
             }
         } catch (JsonSyntaxException | IOException e) {
@@ -70,14 +74,18 @@ public class MaterialObraTable extends BaseTable {
         // Configurar anchos máximos y mínimos
         setColumnMaxWidth(0, 45);   // Clave
         setColumnMaxWidth(2, 50);   // Unidad
-        setColumnMaxWidth(3, 78);   // Requerido
-        setColumnMaxWidth(4, 90);   // Suministrado
-        setColumnMaxWidth(5, 70);   // Pendiente
+        setColumnMaxWidth(3, 50);   // Requerido
+        setColumnMaxWidth(4, 50);   // Suministrado
+        setColumnMaxWidth(5, 65);   // Pendiente
+        setColumnMaxWidth(6, 45);   // Instalado
+        setColumnMaxWidth(7, 45);   // Existente
         
         setColumnMinWidth(0, 45);   // Clave
         setColumnMinWidth(2, 50);   // Unidad
-        setColumnMinWidth(3, 78);   // Requerido
-        setColumnMinWidth(4, 90);   // Suministrado
-        setColumnMinWidth(5, 70);   // Pendiente
+        setColumnMinWidth(3, 50);   // Requerido
+        setColumnMinWidth(4, 50);   // Suministrado
+        setColumnMinWidth(5, 65);   // Pendiente
+        setColumnMinWidth(6, 45);   // Instalado
+        setColumnMinWidth(7, 45);   // Existente
     }
 }
