@@ -127,6 +127,7 @@ public final class HTTPManager {
     // ================= MÉTODOS PRIVADOS =================
     
     private String buildUrl(String endpoint) {
+        System.out.println("http://consanasoft:1973"+endpoint);
         return URL + ":" + PORT + endpoint;
     }
     

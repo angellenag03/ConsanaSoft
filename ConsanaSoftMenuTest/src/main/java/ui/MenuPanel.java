@@ -4,6 +4,7 @@ import utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.time.LocalTime;
 
@@ -14,8 +15,12 @@ public class MenuPanel extends JPanel {
     private String welcomeMessage;
     private final String logoPath = "Logo sin fondo.png";
 
-    public MenuPanel() {
-        setLayout(new BorderLayout());
+    private JFrame parentFrame;
+    
+    public MenuPanel(JFrame parentFrame) {
+        this.setLayout(new BorderLayout());
+        
+        this.parentFrame = parentFrame;
         
         this.saludo = LocalTime.now().isBefore(LocalTime.NOON) ? "Buenos días, " : "Buenas tardes, ";
         this.nombreUsuario = System.getProperty("user.name");
@@ -36,8 +41,8 @@ public class MenuPanel extends JPanel {
 
                 // Crear gradiente para el fondo del banner
                 GradientPaint gradient = new GradientPaint(
-                        0, 0, new Color(32, 33, 46), 
-                        getWidth(), 0, new Color(60, 62, 90));
+                        0, 0, new Color(0x455b66), 
+                        getWidth(), 0, new Color(0x304047));
                 g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
 
@@ -68,10 +73,39 @@ public class MenuPanel extends JPanel {
 
         // Panel de contenido (vacío por ahora)
         JPanel contentPanel = new JPanel();
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.add(new BotonesPanel(parentFrame));
+//        contentPanel.setBackground(Color.WHITE);
         add(contentPanel, BorderLayout.CENTER);
     }
 
+    private class BotonesPanel extends JPanel {
+        private JButton existenciasButton;
+        private JFrame parentFrame;
+        
+        public BotonesPanel(JFrame parentFrame) {
+            this.parentFrame = parentFrame;
+            this.setLayout(new FlowLayout());
+            
+            initComp();
+            setBehavior();
+            
+            this.add(existenciasButton);
+        }
+        
+        private void initComp() {
+            existenciasButton = new JButton("Revisar Existencias");
+        }
+        
+        private void setBehavior() {
+            existenciasButton.addActionListener(this::existencias);
+        }
+        
+        private void existencias(ActionEvent e) {
+            AlmacenExistenciasDialog dialog = new AlmacenExistenciasDialog(parentFrame);
+            dialog.setVisible(true);
+        }
+    }
+    
     private BufferedImage convertirABufferedImage(Image img) {
         if (img instanceof BufferedImage) return (BufferedImage) img;
         if (img == null) return null;

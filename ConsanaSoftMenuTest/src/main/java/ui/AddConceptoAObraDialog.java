@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import tables.ConceptosTable;
+import tables.MaterialConceptoTable;
 
 public class AddConceptoAObraDialog extends JDialog {
     private JLabel tituloLabel;
@@ -38,7 +39,7 @@ public class AddConceptoAObraDialog extends JDialog {
     
     private JPanel infoPanel;
     private JLabel idLabel, claveLabel, nombreLabel, cantidadLabel, unidadLabel; 
-    private JButton addButton, editarButton, cancelarButton, buscarButton;
+    private JButton addButton, editarButton, crearButton, consultarButton, cancelarButton, buscarButton;
     private JTextField buscarField, cantidadField;
     private JComboBox<String> tipoBusquedaCombo;
     private final ObraPanel obraPanel;
@@ -53,7 +54,7 @@ public class AddConceptoAObraDialog extends JDialog {
         setupLayout();
         configurarComportamiento();
         
-        this.setSize(800, 600);
+        this.setSize(820, 600);
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(true);
     }
@@ -81,6 +82,7 @@ public class AddConceptoAObraDialog extends JDialog {
         buscarButton = new JButton("Buscar");
         tipoBusquedaCombo = new JComboBox<>(new String[]{"Nombre", "Clave", "ID"});
         cantidadField = new JTextField(6);
+        crearButton = new JButton("Crear Nuevo");
         
         infoPanel.add(idLabel);
         infoPanel.add(claveLabel);
@@ -88,6 +90,9 @@ public class AddConceptoAObraDialog extends JDialog {
         infoPanel.add(cantidadLabel);
         
         // Botones
+        
+        consultarButton = new JButton("Consultar Materiales");
+        consultarButton.setEnabled(false);
         addButton = new JButton("Añadir"); 
         addButton.setEnabled(false);
         editarButton = new JButton("Editar");
@@ -95,10 +100,11 @@ public class AddConceptoAObraDialog extends JDialog {
         cancelarButton = new JButton("Cancelar");
         buscarButton = new JButton("Buscar");
         
-        addButton.setPreferredSize(new Dimension(85, 25));
-        editarButton.setPreferredSize(new Dimension(85, 25));
-        cancelarButton.setPreferredSize(new Dimension(85, 25));
-        buscarButton.setPreferredSize(new Dimension(85, 25));
+//        addButton.setPreferredSize(new Dimension(85, 25));
+//        editarButton.setPreferredSize(new Dimension(85, 25));
+//        crearButton.setPreferredSize(new Dimension(120, 25));
+//        cancelarButton.setPreferredSize(new Dimension(85, 25));
+//        buscarButton.setPreferredSize(new Dimension(85, 25));
     }
     
     private void setupLayout() {
@@ -111,12 +117,16 @@ public class AddConceptoAObraDialog extends JDialog {
         searchPanel.add(tipoBusquedaCombo);
         searchPanel.add(buscarField);
         searchPanel.add(buscarButton);
+        searchPanel.add(crearButton);
         
-        // Panel de cantidad
-        JPanel cantidadPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        cantidadPanel.add(cantidadLabel);
-        cantidadPanel.add(cantidadField);
-        searchPanel.add(cantidadPanel);
+        searchPanel.add(cantidadLabel);
+        searchPanel.add(cantidadField);
+        
+//        // Panel de cantidad
+//        JPanel cantidadPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+//        cantidadPanel.add(cantidadLabel);
+//        cantidadPanel.add(cantidadField);
+//        searchPanel.add(cantidadPanel);
         
         // Panel central (tabla e información)
         JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
@@ -129,6 +139,7 @@ public class AddConceptoAObraDialog extends JDialog {
         // Panel de botones
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         buttonPanel.add(cancelarButton);
+        buttonPanel.add(consultarButton);
         buttonPanel.add(editarButton);
         buttonPanel.add(addButton);
         
@@ -150,8 +161,10 @@ public class AddConceptoAObraDialog extends JDialog {
             }
         });
         
+        consultarButton.addActionListener(this::consultarMaterial);
         addButton.addActionListener(this::addConcepto);
         editarButton.addActionListener(this::editarConcepto);
+        crearButton.addActionListener(this::crearConcepto);
         buscarButton.addActionListener(e -> realizarBusqueda());
         
         buscarField.addKeyListener(new KeyAdapter() {
@@ -186,14 +199,15 @@ public class AddConceptoAObraDialog extends JDialog {
         
         int tipoBusqueda = tipoBusquedaCombo.getSelectedIndex();
         switch (tipoBusqueda) {
-            case 0 -> conceptosTable.cargarDatosPorId(textoBusqueda);
+            case 2 -> conceptosTable.cargarDatosPorId(textoBusqueda);
             case 1 -> conceptosTable.cargarDatosPorClave(textoBusqueda);
-            case 2 -> conceptosTable.cargarDatosPorNombre(textoBusqueda);
+            case 0 -> conceptosTable.cargarDatosPorNombre(textoBusqueda);
             default -> throw new AssertionError();
         }
     }
     
     private void upInfoConcepto() {
+        consultarButton.setEnabled(true);
         addButton.setEnabled(true);
         editarButton.setEnabled(true);
         
@@ -255,6 +269,20 @@ public class AddConceptoAObraDialog extends JDialog {
         } 
     }
     
+    private void consultarMaterial(ActionEvent e) {
+        String id = (String) conceptosTable.getValueAt(conceptosTable.getSelectedRow(), 0);
+        
+        JDialog mcDialog = new JDialog(this, "Materiales del concepto", true);
+        MaterialConceptoTable materialesConceptoTable = new MaterialConceptoTable(id);
+        
+        JScrollPane scrollPane = new JScrollPane(materialesConceptoTable);
+        mcDialog.add(scrollPane);
+        
+        mcDialog.setSize(500, 400);
+        mcDialog.setLocationRelativeTo(this);
+        mcDialog.setVisible(true);
+    }
+    
     private void editarConcepto(ActionEvent e) {
         EditarConceptoDialog dialog = new EditarConceptoDialog(getConcepto(), parentFrame);
         dialog.setVisible(true);
@@ -269,5 +297,11 @@ public class AddConceptoAObraDialog extends JDialog {
             
             return concepto;
         } catch (Exception e) { return null; }
+    }
+    
+    private void crearConcepto(ActionEvent e) {
+        NuevoConceptoDialog dialog = new NuevoConceptoDialog(parentFrame);
+        dialog.setVisible(true);
+        conceptosTable.cargarDatosIniciales();
     }
 }

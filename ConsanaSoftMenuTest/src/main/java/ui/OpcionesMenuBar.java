@@ -25,6 +25,7 @@ public class OpcionesMenuBar extends JMenuBar {
     // MATERIALES
     private JMenuItem ingresarMaterial;
     private JMenuItem revisarAlmacen;
+    private JMenuItem revisarExistencias;
     
     private final JMenu menuObra;
     private final JMenu menuMaterial;
@@ -56,6 +57,7 @@ public class OpcionesMenuBar extends JMenuBar {
         // MATERIALES
         ingresarMaterial = new JMenuItem("Ingresar Material al Almacén");
         revisarAlmacen = new JMenuItem("Revisar Almacén");
+        revisarExistencias = new JMenuItem("Revisar Existencias");
         
         acercaDe = new JMenuItem("Acerca de");
         
@@ -79,6 +81,7 @@ public class OpcionesMenuBar extends JMenuBar {
         // MATERIALES
         menuMaterial.add(ingresarMaterial);
         menuMaterial.add(revisarAlmacen);
+        menuMaterial.add(revisarExistencias);
         
         // ACERCA DE
         menuAcerca.add(acercaDe);
@@ -89,11 +92,12 @@ public class OpcionesMenuBar extends JMenuBar {
         abrirObraReciente.addActionListener(this::abrirObraRecienteDialog);
         ingresarMaterial.addActionListener(this::ingresarMaterial);
         revisarAlmacen.addActionListener(this::revisarAlmacen);
+        revisarExistencias.addActionListener(this::revisarExistencias);
     }
     
     private void mostrarAcercaDe(ActionEvent e) {
         JOptionPane.showMessageDialog(parentFrame, 
-            "CONSANA Soft\nVersión 1.2.4\n© Angel Sanchez 2025", 
+            "CONSANA Soft\nVersión 1.3.0\n© Angel Sanchez 2025", 
             "Acerca de", 
             JOptionPane.INFORMATION_MESSAGE);
     }
@@ -133,6 +137,11 @@ public class OpcionesMenuBar extends JMenuBar {
     
     private void revisarAlmacen(ActionEvent e) {
         AlmacenDialog dialog = new AlmacenDialog(parentFrame);
+        dialog.setVisible(true);
+    }
+    
+    private void revisarExistencias(ActionEvent e) {
+        AlmacenExistenciasDialog dialog = new AlmacenExistenciasDialog(parentFrame);
         dialog.setVisible(true);
     }
 }

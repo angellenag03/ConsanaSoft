@@ -8,15 +8,19 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class ExistenciasTable extends BaseTable{
+public class ExistenciasTable extends BaseTable {
 
+    private Double total;
+    
     public ExistenciasTable() {
         super();
         initializeModel(new String[]{
             "Ubicación",
-            "Existente"
+            "Existencias: N/A"
         });
-
+        
+        this.total = total;
+        
         clearTable();
         ajustarTabla();
     }
@@ -28,7 +32,8 @@ public class ExistenciasTable extends BaseTable{
 
     public void cargarDatos(String id) {
         try {
-            clearTable();
+            clearTable(); 
+            total = 0.0;
             String response = http.executeRequest("/almacen/existencias?id="+id);
             Type existenciasJson = new TypeToken<List<ExistenciaDTO>>(){}.getType();
             List<ExistenciaDTO> existencias = gson.fromJson(response, existenciasJson);
@@ -38,7 +43,9 @@ public class ExistenciasTable extends BaseTable{
                     e.getUbicacion(),
                     e.getExistente()
                 });
+                total = total + e.getExistente();
             }
+            model.setColumnIdentifiers(new Object[]{"Ubicación","Existencias: "+total});
         } catch (JsonSyntaxException | IOException e) {
             handleError(e, "cargarDatos ExistenciasTable");
         }

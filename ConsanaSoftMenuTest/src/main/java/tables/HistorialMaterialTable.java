@@ -114,7 +114,7 @@ public class HistorialMaterialTable extends BaseTable {
     
     /**
      * Renderer personalizado para la columna de Cantidad que muestra números negativos en rojo
-     * y mantiene los colores alternados de las columnas
+     * y mantiene los colores alternados de las filas
      */
     private class CantidadRenderer extends DefaultTableCellRenderer {
         @Override
@@ -122,13 +122,9 @@ public class HistorialMaterialTable extends BaseTable {
                 boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             
-            // Aplicar colores alternados por columna si no está seleccionada
+            // Aplicar colores alternados por fila (no por columna) si no está seleccionada
             if (!isSelected) {
-                if (column % 2 == 0) { // Columna par
-                    c.setBackground(new Color(245, 245, 245));
-                } else { // Columna impar
-                    c.setBackground(Color.WHITE);
-                }
+                c.setBackground(getRowBackgroundColor(row));
             }
             
             try {

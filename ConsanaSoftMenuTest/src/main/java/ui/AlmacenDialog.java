@@ -1,5 +1,6 @@
 package ui;
 
+import dto.MaterialDTO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,18 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JSplitPane;
 import tables.AlmacenTable;
 import tables.HistorialMaterialTable;
-import tables.ExistenciasTable;
 
 public class AlmacenDialog extends JDialog {
     private JLabel tituloLabel;
     private JLabel buscarLabel;
     private AlmacenTable almacenTable;
-    private ExistenciasTable existenciasTable;
     private JTextField buscarField;
     private JButton buscarButton;
+    private JButton editarButton;
     private JButton cerrarButton;
     private JButton suministrarButton;
     private JFrame parentFrame;
@@ -39,7 +38,7 @@ public class AlmacenDialog extends JDialog {
         setupLayout();
         configurarComportamiento();
         
-        this.setSize(800, 600); // Increased width to accommodate both tables
+        this.setSize(500, 600);
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }
@@ -49,10 +48,11 @@ public class AlmacenDialog extends JDialog {
         tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
         almacenTable = new AlmacenTable();
-        existenciasTable = new ExistenciasTable();
         
         buscarLabel = new JLabel("Buscar por nombre:");
         buscarField = new JTextField(25);
+        editarButton = new JButton("Editar");
+        editarButton.setEnabled(false);
         buscarButton = new JButton("Buscar");
         suministrarButton = new JButton("Suministrar");
         suministrarButton.setEnabled(false);
@@ -72,35 +72,31 @@ public class AlmacenDialog extends JDialog {
         searchPanel.add(buscarButton);
         topPanel.add(searchPanel, BorderLayout.CENTER);
         
-        // Panel central (tablas divididas)
-        JScrollPane almacenScrollPane = new JScrollPane(almacenTable);
-        almacenScrollPane.setPreferredSize(new Dimension(400, 400));
-        
-        JScrollPane existenciasScrollPane = new JScrollPane(existenciasTable);
-        existenciasScrollPane.setPreferredSize(new Dimension(300, 400));
-        
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, almacenScrollPane, existenciasScrollPane);
-        splitPane.setDividerLocation(0.5);
-        splitPane.setResizeWeight(0.5);
+        // Panel central (tabla)
+        JScrollPane scrollPane = new JScrollPane(almacenTable);
+        scrollPane.setPreferredSize(new Dimension(750, 400));
         
         // Panel inferior (botón cerrar)
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        bottomPanel.add(editarButton);
         bottomPanel.add(suministrarButton);
         bottomPanel.add(cerrarButton);
         
         // Ensamblaje final
         mainPanel.add(topPanel, BorderLayout.NORTH);
-        mainPanel.add(splitPane, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         
         this.add(mainPanel);
     }
     
     private void configurarComportamiento() {
+        editarButton.addActionListener(this::editar);
         suministrarButton.addActionListener(this::suministrar);
         cerrarButton.addActionListener(e -> dispose());
         
         buscarButton.addActionListener(e -> realizarBusqueda());
+        
         
         buscarField.addKeyListener(new KeyAdapter() {
             @Override
@@ -113,9 +109,8 @@ public class AlmacenDialog extends JDialog {
         
         almacenTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && almacenTable.getSelectedRow() != -1) {
+                editarButton.setEnabled(true);
                 suministrarButton.setEnabled(true);
-                // Load existencias when a row is selected
-                existenciasTable.cargarDatos(almacenTable.getId()+"");
             }
         });
         
@@ -142,16 +137,6 @@ public class AlmacenDialog extends JDialog {
         JScrollPane scrollPane = new JScrollPane(historialTable);
         historialDialog.add(scrollPane);
         
-        // Add ESC key listener to close the dialog
-        historialDialog.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    historialDialog.dispose();
-                }
-            }
-        });
-        
         historialDialog.setSize(800, 400);
         historialDialog.setLocationRelativeTo(this);
         historialDialog.setVisible(true);
@@ -159,13 +144,13 @@ public class AlmacenDialog extends JDialog {
     
     private void realizarBusqueda() {
         String textoBusqueda = buscarField.getText().trim();
+        editarButton.setEnabled(false);
         suministrarButton.setEnabled(false);
         if(textoBusqueda.isEmpty()) {
             almacenTable.cargarDatosIniciales();
         } else {
             almacenTable.cargarDatosNombre(textoBusqueda);
         }
-        existenciasTable.cargarDatosIniciales(); // Clear existencias table when searching
     }
     
     private void suministrar(ActionEvent e) {
@@ -173,6 +158,14 @@ public class AlmacenDialog extends JDialog {
         d.setVisible(true);
         
         almacenTable.cargarDatosIniciales();
-        existenciasTable.cargarDatosIniciales(); // Clear existencias table after supplying
+    }
+    
+    private void editar(ActionEvent e) {
+        Long id = almacenTable.getId();
+        String nombre = almacenTable.getNombre();
+        String unidad = almacenTable.getUnidad();
+        EditarMaterialDialog dialog = new EditarMaterialDialog(
+                new MaterialDTO(id, nombre, unidad), parentFrame);
+        dialog.setVisible(true);
     }
 }

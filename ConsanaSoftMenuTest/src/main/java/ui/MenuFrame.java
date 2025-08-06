@@ -2,19 +2,22 @@ package ui;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.themes.MaterialOceanicTheme;
 import utils.DebugConsole;
 import utils.ImageLoader;
 
 public class MenuFrame extends JFrame {
     private final OpcionesMenuBar bar;
-    private final MenuPanel menuPanel = new MenuPanel();
+    private final MenuPanel menuPanel;
     
     public MenuFrame() throws HeadlessException {
+        super("ConsanaSoft");
+        this.menuPanel = new MenuPanel(this);
         // Configuración inicial del frame
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-        this.setTitle("ConsanaSoft");
         this.setIconImage(ImageLoader.getImagen("Logo.png"));
         this.add(menuPanel);
         
@@ -69,10 +72,10 @@ public class MenuFrame extends JFrame {
     
     private void cargarTema() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(new MaterialLookAndFeel(new MaterialOceanicTheme()));
             SwingUtilities.updateComponentTreeUI(this);
             DebugConsole.log("✓ Tema del sistema cargado correctamente");
-        } catch (Exception ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             DebugConsole.logError("✗ Error al cargar el tema: " + ex.getMessage());
             DebugConsole.logException(ex);
         } 

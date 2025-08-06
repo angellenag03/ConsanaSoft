@@ -67,4 +67,14 @@ public class AlmacenTable extends BaseTable {
         Object value = getSelectedValue(0);
         return value != null ? Long.valueOf(value.toString()) : null;
     }
+    
+    public String getNombre() {
+        Object value = getSelectedValue(1);
+        return value != null ? String.valueOf(value.toString()) : null;
+    }
+    
+    public String getUnidad() {
+        Object value = getSelectedValue(2);
+        return value != null ? String.valueOf(value.toString()) : null;
+    }
 }

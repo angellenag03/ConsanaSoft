@@ -45,8 +45,8 @@ public class NuevoMaterialDialog extends JDialog {
         super(parentFrame, "Nuevo Material", true);
         initComponents();
         setupLayout();
-        configurarComportamiento();
-        this.setSize(450, 450);
+        setupBehavior();
+        this.setSize(450, 500);
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }
@@ -147,7 +147,7 @@ public class NuevoMaterialDialog extends JDialog {
         this.add(mainPanel);
     }
 
-    private void configurarComportamiento() {
+    private void setupBehavior() {
         cancelarButton.addActionListener(e -> dispose());
         guardarButton.addActionListener(this::onGuardar);
         origenBox.addActionListener(this::alterarLabels);

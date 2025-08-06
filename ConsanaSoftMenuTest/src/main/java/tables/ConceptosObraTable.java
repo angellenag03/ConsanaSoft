@@ -43,13 +43,10 @@ public class ConceptosObraTable extends BaseTable {
             textArea.setFont(getFont());
             textArea.setSize(getColumnModel().getColumn(column).getWidth(), getRowHeight(row));
             
-            // Aplicar el color de fondo según si la columna es par o impar
+            // Aplicar el color de fondo correcto basado en la fila (no la columna)
             if (!isRowSelected(row)) {
-                if (column % 2 == 0) { // Columna par
-                    textArea.setBackground(new java.awt.Color(245, 245, 245));
-                } else { // Columna impar
-                    textArea.setBackground(java.awt.Color.WHITE);
-                }
+                textArea.setBackground(getRowBackgroundColor(row));
+                textArea.setForeground(java.awt.Color.BLACK);
             }
             
             // Ajustar altura de la fila según el contenido

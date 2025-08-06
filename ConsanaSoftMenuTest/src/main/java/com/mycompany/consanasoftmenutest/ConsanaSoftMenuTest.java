@@ -1,11 +1,16 @@
 package com.mycompany.consanasoftmenutest;
 
+import javax.swing.SwingUtilities;
 import ui.MenuFrame;
+import utils.FontSetter;
 
 public class ConsanaSoftMenuTest {
 
     public static void main(String[] args) {
-        MenuFrame mf = new MenuFrame();
+        FontSetter.setDefaultFontToBahnschrift();
         
+        SwingUtilities.invokeLater(() -> {
+            MenuFrame mf = new MenuFrame();
+        });
     }
 }

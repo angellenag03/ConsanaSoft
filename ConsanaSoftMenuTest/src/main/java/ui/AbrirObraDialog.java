@@ -39,7 +39,7 @@ public class AbrirObraDialog extends JDialog {
         setupLayout();
         configurarComportamiento();
         
-        this.setSize(650, 400);
+        this.setSize(650, 500);
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }

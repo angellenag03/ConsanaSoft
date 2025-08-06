@@ -1,4 +1,3 @@
-
 package tables;
 
 import com.google.gson.Gson;
@@ -67,6 +66,16 @@ public abstract class BaseTable extends JTable {
             // Forzar repintado
             header.repaint();
         }
+    }
+    
+    /**
+     * Método protegido para que las clases hijas puedan obtener el color de fondo correcto
+     * basado en el número de fila
+     * @param row número de fila
+     * @return Color de fondo para la fila
+     */
+    protected Color getRowBackgroundColor(int row) {
+        return row % 2 == 0 ? COLOR_FILA_IMPAR : COLOR_FILA_PAR;
     }
     
     /**
@@ -167,7 +176,7 @@ public abstract class BaseTable extends JTable {
                     table, value, isSelected, hasFocus, row, column);
             
             if (!isSelected) {
-                component.setBackground(row % 2 == 0 ? COLOR_FILA_IMPAR : COLOR_FILA_PAR);
+                component.setBackground(getRowBackgroundColor(row));
                 component.setForeground(Color.BLACK);
             }
             

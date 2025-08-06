@@ -163,7 +163,7 @@ public class ObraPanel extends JPanel {
     private void regresarAlMenu(ActionEvent e) {
         SwingUtilities.invokeLater(() -> {
             parentFrame.getContentPane().removeAll();
-            parentFrame.add(new MenuPanel());
+            parentFrame.add(new MenuPanel(parentFrame));
             parentFrame.revalidate();
             parentFrame.repaint();
             parentFrame.setTitle("ConsanaSoft");

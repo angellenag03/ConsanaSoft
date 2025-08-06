@@ -23,13 +23,13 @@ import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import com.google.gson.Gson;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.util.HashMap;
 
 public class EditarConceptoDialog extends JDialog {
     
     private final ConceptoDTO concepto;
     private final HTTPManager http = HTTPManager.getInstance();
-    private final Gson gson = new Gson();
     
     // Componentes UI
     private JTextField claveField;
@@ -172,7 +172,7 @@ public class EditarConceptoDialog extends JDialog {
 
             JOptionPane.showMessageDialog(this, "Concepto actualizado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         dispose();
-        } catch (Exception ex) {
+        } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(this, 
                 "Error al guardar: " + ex.getMessage(), 
                 "Error", 
