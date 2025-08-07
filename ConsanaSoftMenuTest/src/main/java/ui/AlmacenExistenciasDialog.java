@@ -166,6 +166,7 @@ public class AlmacenExistenciasDialog extends JDialog {
     
     private void realizarBusqueda() {
         String textoBusqueda = buscarField.getText().trim();
+        editarButton.setEnabled(false);
         suministrarButton.setEnabled(false);
         if(textoBusqueda.isEmpty()) {
             almacenTable.cargarDatosIniciales();
