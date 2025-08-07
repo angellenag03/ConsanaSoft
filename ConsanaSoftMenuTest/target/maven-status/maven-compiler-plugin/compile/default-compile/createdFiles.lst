@@ -3,8 +3,10 @@ tables\ConceptosTable.class
 utils\FechaPicker.class
 tables\MaterialConceptoTable$1.class
 ui\AbrirObraDialog.class
+dto\MaterialSinIdDTO.class
 tables\MaterialesTable$1.class
 ui\NuevoMaterialDialog.class
+tables\ValeSalidaTable$1.class
 ui\AlmacenExistenciasDialog$1.class
 tables\MaterialConceptoTable.class
 dto\ObraDTO.class
@@ -57,6 +59,7 @@ tables\ConceptosObraTable$1.class
 tables\ConceptosTable$1.class
 ui\InstalarMaterialObraDialog$1.class
 ui\NuevoMaterialDialog$1.class
+tables\ValeSalidaTable.class
 ui\MenuPanel.class
 ui\ObraPanel$1.class
 dto\ConceptoConMaterialDTO.class

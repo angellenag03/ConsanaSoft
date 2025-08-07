@@ -3,11 +3,13 @@ package ui;
 import dto.ObraDTO;
 import tables.ConceptosObraTable;
 import tables.MaterialObraTable;
-import utils.HTTPManager;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import tables.HistorialMaterialTable;
+import tables.ValeSalidaTable;
 import utils.ExcelGenerator;
 
 public class ObraPanel extends JPanel {
@@ -26,6 +29,8 @@ public class ObraPanel extends JPanel {
     private JButton salirButtonConceptos;
     private JButton salirButtonInsumos;
     private JButton aniadirButton;
+    
+    private JButton generarValeButton;
     private JButton suministrarButton;
     private JButton instalarButton;
     private JButton exportarButton;
@@ -33,13 +38,19 @@ public class ObraPanel extends JPanel {
     private ConceptosObraTable conceptosTable;
     private MaterialObraTable materialesTable;
     private HistorialMaterialTable historialTable;
+    
+    private ValeSalidaTable valeSalidaTable;
+    
     private JFrame parentFrame;
     
+    
     private final ObraDTO obra;
+    private final String fecha;
     
     public ObraPanel(JFrame parentFrame, ObraDTO obra) {
         this.obra = obra;
         this.parentFrame = parentFrame;
+        this.fecha = getFechaHora();
         initComponents();
         setupUI();
         this.parentFrame.setTitle("ConsanaSoft: "+obra.getId()+" "+obra.getNombre());
@@ -52,9 +63,14 @@ public class ObraPanel extends JPanel {
         suministrarButton = new JButton("Suministrar");
         instalarButton = new JButton("Instalar");
         exportarButton = new JButton("Exportar");
+        generarValeButton = new JButton("Generar Vale");
         conceptosTable = new ConceptosObraTable(obra.getId());
         materialesTable = new MaterialObraTable(obra.getId());
+        valeSalidaTable = new ValeSalidaTable(obra.getId());
         historialTable = new HistorialMaterialTable();
+        
+        suministrarButton.setEnabled(false);
+        instalarButton.setEnabled(false);
         
         // Configurar tamaño preferido de las tablas
         conceptosTable.setPreferredScrollableViewportSize(new Dimension(800, 300));
@@ -68,6 +84,8 @@ public class ObraPanel extends JPanel {
                 if (!e.getValueIsAdjusting()) {
                     String materialNombre = materialesTable.getNombre();
                     if (materialNombre != null) {
+                        suministrarButton.setEnabled(true);
+                        instalarButton.setEnabled(true); 
                         historialTable.cargarDatosNombreObra(obra.getId(), materialNombre);
                     }
                 }
@@ -82,7 +100,7 @@ public class ObraPanel extends JPanel {
         instalarButton.addActionListener(this::instalarMaterial);
         exportarButton.addActionListener(e -> 
                 ExcelGenerator.getInstance().exportJTablesToExcel(obra.getNombre(), new int[]{1}, materialesTable));
-        
+        generarValeButton.addActionListener(this::generarVale);
     }
     
     private void setupUI() {
@@ -98,6 +116,7 @@ public class ObraPanel extends JPanel {
         insumosButtonPanel.add(suministrarButton);
         insumosButtonPanel.add(instalarButton);
         insumosButtonPanel.add(exportarButton);
+        insumosButtonPanel.add(generarValeButton);
         insumosButtonPanel.add(salirButtonInsumos);
         
         // Panel dividido HORIZONTAL para insumos
@@ -158,6 +177,39 @@ public class ObraPanel extends JPanel {
     public void actualizarTablas() {
         conceptosTable.cargarDatosIniciales();
         materialesTable.cargarDatosIniciales();
+        suministrarButton.setEnabled(false);
+        instalarButton.setEnabled(false);
+    }
+    
+    private void generarVale(ActionEvent e) {
+        String respuesta = preguntarTipoVale(parentFrame);
+        if(respuesta == null) {
+            return;
+        }
+        if(respuesta.equals("Hoy")){
+            valeSalidaTable.cargarDatosHoy();
+        }
+        if(respuesta.equals("Sesion")){
+            valeSalidaTable.cargarDatosSesion(fecha);
+        } 
+        
+        List<int[]> anchos = List.of(new int[]{200,65,60});
+        
+        ExcelGenerator.getInstance().exportJTablesToExcelWithCustomWidths(
+                obra.getNombre(), new int[]{0},anchos, valeSalidaTable);
+    }
+    
+    private static String preguntarTipoVale(JFrame parent) {
+        Object[] opciones = {"Hoy", "Sesión"};
+        return (String)JOptionPane.showInputDialog(
+            parent,
+            "¿Deseas generar el vale de hoy o de la sesión actual?",
+            "Generar Vale",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0] // Opción por defecto
+        );
     }
     
     private void regresarAlMenu(ActionEvent e) {
@@ -168,5 +220,10 @@ public class ObraPanel extends JPanel {
             parentFrame.repaint();
             parentFrame.setTitle("ConsanaSoft");
         });
+    }
+    
+    private static String getFechaHora() {
+        return LocalDateTime.now()
+               .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

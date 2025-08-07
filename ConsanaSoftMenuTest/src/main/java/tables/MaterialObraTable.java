@@ -19,11 +19,11 @@ public class MaterialObraTable extends BaseTable {
             "Clave",
             "Nombre",
             "Unidad",
-            "Req.",
-            "Sumin.",
-            "Por Sum.",
-            "Inst.",
-            "Exist."
+            "Requerido",
+            "Sumininstrado",
+            "Por Suministrar",
+            "Instalar",
+            "Existente"
         });
         
         ajustarTabla();

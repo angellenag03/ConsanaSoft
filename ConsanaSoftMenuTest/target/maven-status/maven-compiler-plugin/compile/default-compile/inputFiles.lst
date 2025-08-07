@@ -24,12 +24,14 @@ D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\O
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\com\mycompany\consanasoftmenutest\ConsanaSoftMenuTest.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialConceptoDTO.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\ExistenciaDTO.java
+D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\ValeSalidaTable.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\ConceptoDTO.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\MaterialesTable.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\utils\FechaPicker.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\EditarMaterialDialog.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\AlmacenDialog.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\HistorialMaterialTable.java
+D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialSinIdDTO.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\utils\HTTPManager.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\utils\ImageLoader.java
 D:\01-CÓDIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\AlmacenTable.java
