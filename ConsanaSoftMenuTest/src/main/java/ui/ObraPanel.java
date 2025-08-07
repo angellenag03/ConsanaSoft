@@ -98,8 +98,7 @@ public class ObraPanel extends JPanel {
         aniadirButton.addActionListener(this::addConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
         instalarButton.addActionListener(this::instalarMaterial);
-        exportarButton.addActionListener(e -> 
-                ExcelGenerator.getInstance().exportJTablesToExcel(obra.getNombre(), new int[]{1}, materialesTable));
+        exportarButton.addActionListener(this::exportarInsumos);
         generarValeButton.addActionListener(this::generarVale);
     }
     
@@ -197,6 +196,12 @@ public class ObraPanel extends JPanel {
         
         ExcelGenerator.getInstance().exportJTablesToExcelWithCustomWidths(
                 obra.getNombre(), new int[]{0},anchos, valeSalidaTable);
+    }
+    
+    private void exportarInsumos(ActionEvent e) {
+        List<int[]> anchos = List.of(new int[]{46, 326, 80, 80, 120, 120, 80, 80});
+        ExcelGenerator.getInstance().exportJTablesToExcelWithCustomWidths(
+                obra.getNombre(), new int[]{1}, anchos, materialesTable);
     }
     
     private static String preguntarTipoVale(JFrame parent) {

@@ -2,6 +2,7 @@ package utils;
 
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -130,7 +131,7 @@ public class ExcelGenerator {
             cell.setCellValue(title);
             cell.setCellStyle(styles.get("title"));
             sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, colSpan-1));
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(parentComponent, 
                 "Error al añadir título: " + e.getMessage(), 
                 "Error de Exportación", 
@@ -153,7 +154,7 @@ public class ExcelGenerator {
             cell.setCellValue(subtitle);
             cell.setCellStyle(styles.get("subtitle"));
             sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, colSpan-1));
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(parentComponent, 
                 "Error al añadir subtítulo: " + e.getMessage(), 
                 "Error de Exportación", 
@@ -161,7 +162,7 @@ public class ExcelGenerator {
         }
     }
 
-    public void addDate() {
+    public void addDate(int colSpan) {
         try {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'del' yyyy");
@@ -171,7 +172,7 @@ public class ExcelGenerator {
             Cell cell = row.createCell(0);
             cell.setCellValue(fecha);
             cell.setCellStyle(styles.get("date"));
-            sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 5));
+            sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, colSpan-1));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(parentComponent, 
                 "Error al añadir fecha: " + e.getMessage(), 
@@ -438,7 +439,7 @@ public class ExcelGenerator {
             }
             
             addTitle(reportTitle, maxColumns);
-            addDate();
+            addDate(maxColumns);
             addEmptyRow();
             
             for (JTable table : tables) {
@@ -488,7 +489,7 @@ public class ExcelGenerator {
             }
 
             addTitle(reportTitle != null ? reportTitle : "Reporte", maxColumns);
-            addDate();
+            addDate(maxColumns);
             addEmptyRow();
 
             for (int i = 0; i < tables.length; i++) {
