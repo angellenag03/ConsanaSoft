@@ -147,7 +147,9 @@ public class ConceptosTable extends BaseTable {
     
     @Override
     protected void ajustarTabla() {
-        setColumnMaxWidth(0, 40);           // ID
+        setColumnMinWidth(0, 0);  // ID
+        setColumnMaxWidth(0, 0);  // ID
+        
         setColumnMinWidth(1, 120);          // Clave - mínimo
         setColumnMaxWidth(1, 120);          // Clave - máximo
         setColumnMaxWidth(3, 60);           // Unidad

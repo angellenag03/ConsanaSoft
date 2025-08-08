@@ -41,7 +41,7 @@ public class AlmacenExistenciasDialog extends JDialog {
         setupLayout();
         configurarComportamiento();
         
-        this.setSize(800, 600); // Increased width to accommodate both tables
+        this.setSize(850, 600); // Increased width to accommodate both tables
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }
@@ -133,7 +133,7 @@ public class AlmacenExistenciasDialog extends JDialog {
                 if (e.getClickCount() == 2) {
                     int row = almacenTable.getSelectedRow();
                     if (row >= 0) {
-                        String nombreMaterial = (String) almacenTable.getValueAt(row, 1); // Columna 1 es el nombre
+                        String nombreMaterial = almacenTable.getNombre();
                         mostrarHistorialMaterial(nombreMaterial);
                     }
                 }
@@ -186,10 +186,11 @@ public class AlmacenExistenciasDialog extends JDialog {
     
     private void editar(ActionEvent e) {
         Long id = almacenTable.getId();
+        String clave = almacenTable.getClave();
         String nombre = almacenTable.getNombre();
         String unidad = almacenTable.getUnidad();
         EditarMaterialDialog dialog = new EditarMaterialDialog(
-                new MaterialDTO(id, nombre, unidad), parentFrame);
+                new MaterialDTO(id, clave, nombre, unidad), parentFrame);
         dialog.setVisible(true);
     }
 }

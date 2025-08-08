@@ -152,11 +152,12 @@ public class NuevoConceptoDialog extends JDialog {
             dialog.setVisible(true);
             
             Long id = dialog.getIdSeleccionado();
+            String clave = dialog.getClaveSeleccionada();
             String nombre = dialog.getNombreSeleccionado();
             String unidad = dialog.getUnidadSeleccionada();
             
             if (nombre != null && unidad != null) {
-                MaterialOutputDTO materiales = new MaterialOutputDTO(id, nombre, unidad, 0.0);
+                MaterialOutputDTO materiales = new MaterialOutputDTO(id, clave, nombre, unidad, 0.0);
                 materialesTable.setMaterial(materiales);
             }
         });

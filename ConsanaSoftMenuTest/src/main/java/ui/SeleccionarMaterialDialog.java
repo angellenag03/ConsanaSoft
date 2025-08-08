@@ -13,6 +13,7 @@ public class SeleccionarMaterialDialog extends JDialog {
     private JButton cancelarButton;
     
     private Long idSeleccionado;
+    private String claveSeleccionada;
     private String nombreSeleccionado;
     private String unidadSeleccionada;
 
@@ -82,8 +83,9 @@ public class SeleccionarMaterialDialog extends JDialog {
             int filaSeleccionada = materialesTable.getSelectedRow();
             if (filaSeleccionada >= 0) {
                 idSeleccionado = (Long) materialesTable.getValueAt(filaSeleccionada, 0);
-                nombreSeleccionado = (String) materialesTable.getValueAt(filaSeleccionada, 1); // Columna "Nombre"
-                unidadSeleccionada = (String) materialesTable.getValueAt(filaSeleccionada, 2); // Columna "Unidad"
+                claveSeleccionada = (String) materialesTable.getValueAt(filaSeleccionada, 1);
+                nombreSeleccionado = (String) materialesTable.getValueAt(filaSeleccionada, 2); // Columna "Nombre"
+                unidadSeleccionada = (String) materialesTable.getValueAt(filaSeleccionada, 3); // Columna "Unidad"
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, 
@@ -120,6 +122,9 @@ public class SeleccionarMaterialDialog extends JDialog {
         return idSeleccionado;
     }
     
+    public String getClaveSeleccionada() {
+        return claveSeleccionada;
+    }
     // Getters para obtener los datos seleccionados
     public String getNombreSeleccionado() {
         return nombreSeleccionado;

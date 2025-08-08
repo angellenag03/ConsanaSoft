@@ -46,6 +46,7 @@ public class ValeSalidaTable extends BaseTable {
             
             for (MaterialSinIdDTO m : materialesVale) {
                 model.addRow(new Object[]{
+                    m.getClave(),
                     m.getNombre(),
                     m.getUnidad(),
                     m.getCantidad()
@@ -58,9 +59,10 @@ public class ValeSalidaTable extends BaseTable {
      
     @Override
     protected void ajustarTabla() {
-        setColumnMaxWidth(0, 200);  // Nombre
-        setColumnMaxWidth(1, 120); // Unidad
-        setColumnMaxWidth(2, 60);  // Cantidad
+        setColumnMaxWidth(0, 120); // Clave
+        setColumnMaxWidth(1, 200);  // Nombre
+        setColumnMaxWidth(2, 120); // Unidad
+        setColumnMaxWidth(3, 60);  // Cantidad
     }
     
 }

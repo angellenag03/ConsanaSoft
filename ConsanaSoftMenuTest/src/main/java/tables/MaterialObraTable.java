@@ -16,6 +16,7 @@ public class MaterialObraTable extends BaseTable {
         
         // Inicializar el modelo con las columnas específicas
         initializeModel(new String[] {
+            "ID",
             "Clave",
             "Nombre",
             "Unidad",
@@ -45,6 +46,7 @@ public class MaterialObraTable extends BaseTable {
             for (MaterialObraDTO m : materiales) {
                 model.addRow(new Object[]{
                     m.getId(),
+                    m.getClave(),
                     m.getNombre(),
                     m.getUnidad(),
                     m.getCantidadRequerida(),
@@ -64,28 +66,36 @@ public class MaterialObraTable extends BaseTable {
         return value != null ? value.toString() : null;
     }
     
-    public String getNombre() {
+    public String getClave() {
         Object value = getSelectedValue(1);
+        return value != null ? value.toString() : null;
+    }
+    
+    public String getNombre() {
+        Object value = getSelectedValue(2);
         return value != null ? value.toString() : null;
     }
     
     @Override
     protected void ajustarTabla() {
         // Configurar anchos máximos y mínimos
-        setColumnMaxWidth(0, 45);   // Clave
-        setColumnMaxWidth(2, 50);   // Unidad
-        setColumnMaxWidth(3, 50);   // Requerido
-        setColumnMaxWidth(4, 50);   // Suministrado
-        setColumnMaxWidth(5, 65);   // Pendiente
-        setColumnMaxWidth(6, 45);   // Instalado
-        setColumnMaxWidth(7, 45);   // Existente
+        setColumnMinWidth(0, 0);  // ID
+        setColumnMaxWidth(0, 0);  // ID
+                
+        setColumnMaxWidth(1, 100);   // Clave
+        setColumnMaxWidth(3, 50);   // Unidad
+        setColumnMaxWidth(4, 50);   // Requerido
+        setColumnMaxWidth(5, 50);   // Suministrado
+        setColumnMaxWidth(6, 65);   // Pendiente
+        setColumnMaxWidth(7, 45);   // Instalado
+        setColumnMaxWidth(8, 45);   // Existente
         
-        setColumnMinWidth(0, 45);   // Clave
-        setColumnMinWidth(2, 50);   // Unidad
-        setColumnMinWidth(3, 50);   // Requerido
-        setColumnMinWidth(4, 50);   // Suministrado
-        setColumnMinWidth(5, 65);   // Pendiente
-        setColumnMinWidth(6, 45);   // Instalado
-        setColumnMinWidth(7, 45);   // Existente
+        setColumnMinWidth(1, 100);   // Clave
+        setColumnMinWidth(3, 50);   // Unidad
+        setColumnMinWidth(4, 50);   // Requerido
+        setColumnMinWidth(5, 50);   // Suministrado
+        setColumnMinWidth(6, 65);   // Pendiente
+        setColumnMinWidth(7, 45);   // Instalado
+        setColumnMinWidth(8, 45);   // Existente
     }
-}
+}                                                                                                          

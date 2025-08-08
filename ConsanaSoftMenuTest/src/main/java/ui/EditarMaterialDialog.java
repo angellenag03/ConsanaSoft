@@ -23,8 +23,8 @@ import utils.HTTPManager;
 public class EditarMaterialDialog extends JDialog {
     private final MaterialDTO material;
     
-    private JLabel nombreLabel, unidadLabel;
-    private JTextField nombreField, unidadField;
+    private JLabel claveLabel, nombreLabel, unidadLabel;
+    private JTextField claveField, nombreField, unidadField;
     private JButton cancelarButton, guardarButton;
     
     private final HTTPManager http = HTTPManager.getInstance();
@@ -37,15 +37,17 @@ public class EditarMaterialDialog extends JDialog {
         setupLayout();
         setupBehavior();
         
-        this.setSize(400, 300);
+        this.setSize(400, 350);
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }
     
     private void initComponents() {
+        claveLabel = new JLabel("Clave");
         nombreLabel = new JLabel("Nombre:");
         unidadLabel = new JLabel("Unidad");
         
+        claveField = new JTextField(material.getClave(), 25);
         nombreField = new JTextField(material.getNombre(), 25);
         unidadField = new JTextField(material.getUnidad(), 25);
         
@@ -62,6 +64,8 @@ public class EditarMaterialDialog extends JDialog {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         
         JPanel datosPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        datosPanel.add(claveLabel);
+        datosPanel.add(claveField);
         datosPanel.add(nombreLabel);
         datosPanel.add(nombreField);
         datosPanel.add(unidadLabel);
@@ -86,11 +90,13 @@ public class EditarMaterialDialog extends JDialog {
     
     private void guardarCambios(ActionEvent e) {
         try {
-            if(validarCampos()) {
+            if(!validarCampos()) {
+                dispose();
                 return;
             } else {
                 HashMap<String, Object> nuevoMaterial = new HashMap<>();
                 nuevoMaterial.put("id", material.getId());
+                nuevoMaterial.put("clave", claveField.getText().trim());
                 nuevoMaterial.put("nombre", nombreField.getText().trim());
                 nuevoMaterial.put("unidad", unidadField.getText().trim());
 

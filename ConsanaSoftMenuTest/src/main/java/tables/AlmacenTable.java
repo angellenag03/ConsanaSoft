@@ -17,6 +17,7 @@ public class AlmacenTable extends BaseTable {
         // Inicializar el modelo con las columnas específicas
         initializeModel(new String[] {
             "ID",
+            "Clave",
             "Nombre", 
             "Unidad",
             "Cantidad"
@@ -46,6 +47,7 @@ public class AlmacenTable extends BaseTable {
             for (MaterialOutputDTO m : materiales) {
                 model.addRow(new Object[]{
                     m.getId(),
+                    m.getClave(),
                     m.getNombre(),
                     m.getUnidad(),
                     m.getCantidad()
@@ -58,9 +60,16 @@ public class AlmacenTable extends BaseTable {
     
     @Override
     protected void ajustarTabla() {
-        setColumnMaxWidth(0, 40);  // ID
-        setColumnMaxWidth(2, 50);  // Unidad
-        setColumnMaxWidth(3, 60);  // Cantidad
+        setColumnMinWidth(0, 0);  // ID
+        setColumnMaxWidth(0, 0);  // ID
+
+        setColumnMaxWidth(1, 100); // Clave
+        setColumnMaxWidth(3, 60);  // Unidad
+        setColumnMaxWidth(4, 70);  // Cantidad
+        
+//        setColumnMinWidth(1, 100); // Clave
+//        setColumnMinWidth(3, 60);  // Unidad
+//        setColumnMinWidth(4, 70);  // Cantidad
     }
     
     public Long getId() {
@@ -68,13 +77,18 @@ public class AlmacenTable extends BaseTable {
         return value != null ? Long.valueOf(value.toString()) : null;
     }
     
-    public String getNombre() {
+    public String getClave() {
         Object value = getSelectedValue(1);
         return value != null ? String.valueOf(value.toString()) : null;
     }
     
-    public String getUnidad() {
+    public String getNombre() {
         Object value = getSelectedValue(2);
+        return value != null ? String.valueOf(value.toString()) : null;
+    }
+    
+    public String getUnidad() {
+        Object value = getSelectedValue(3);
         return value != null ? String.valueOf(value.toString()) : null;
     }
 }

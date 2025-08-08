@@ -3,6 +3,7 @@ package dto;
 
 public class MaterialObraDTO {
     private String id;
+    private String clave;
     private String nombre;
     private String unidad;
     private String cantidadRequerida;
@@ -16,6 +17,7 @@ public class MaterialObraDTO {
             String cantidadInstalada, String cantidadExistente
     ) {
         this.id = id;
+        this.clave = clave;
         this.nombre = nombre;
         this.unidad = unidad;
         this.cantidadRequerida = cantidadRequerida;
@@ -26,6 +28,7 @@ public class MaterialObraDTO {
     }
 
     public String getId() { return id; }
+    public String getClave() { return clave; }
     public String getNombre() { return nombre; }
     public String getUnidad() { return unidad; }
     public String getCantidadRequerida() { return cantidadRequerida; }

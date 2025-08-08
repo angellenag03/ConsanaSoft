@@ -28,6 +28,7 @@ public class MaterialesTable extends BaseTable {
         // Inicializar el modelo con las columnas específicas
         initializeModel(new String[] {
             "ID",
+            "Clave",
             "Nombre",
             "Unidad"
         });
@@ -57,6 +58,7 @@ public class MaterialesTable extends BaseTable {
             for (MaterialDTO m : materiales) {
                 model.addRow(new Object[]{
                     m.getId(),
+                    m.getClave(),
                     m.getNombre(),
                     m.getUnidad()
                 });
@@ -68,7 +70,10 @@ public class MaterialesTable extends BaseTable {
     
     @Override
     protected void ajustarTabla() {
-        setColumnMaxWidth(0, 40);  // ID
+        setColumnMinWidth(0, 0);  // ID
+        setColumnMaxWidth(0, 0);  // ID
+        
+        setColumnMaxWidth(1, 100); // Clave
         setColumnMaxWidth(2, 50);  // Unidad
     }
 }

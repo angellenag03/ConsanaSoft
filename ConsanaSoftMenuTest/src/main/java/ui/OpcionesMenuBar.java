@@ -5,7 +5,6 @@ import dto.ObraDTO;
 import utils.HTTPManager;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import static java.lang.System.out;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -97,7 +96,7 @@ public class OpcionesMenuBar extends JMenuBar {
     
     private void mostrarAcercaDe(ActionEvent e) {
         JOptionPane.showMessageDialog(parentFrame, 
-            "CONSANA Soft\nVersión 1.3.0\n© Angel Sanchez 2025", 
+            "CONSANA Soft\nVersión 1.3.1\n© Angel Sanchez 2025", 
             "Acerca de", 
             JOptionPane.INFORMATION_MESSAGE);
     }

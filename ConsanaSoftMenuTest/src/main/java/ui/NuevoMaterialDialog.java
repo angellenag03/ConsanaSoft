@@ -13,6 +13,8 @@ import java.util.Map;
 
 public class NuevoMaterialDialog extends JDialog {
     private JLabel tituloLabel;
+    
+    private JLabel claveLabel;
     private JLabel nombreLabel;
     private JLabel unidadLabel;
     private JLabel cantidadLabel;
@@ -21,6 +23,7 @@ public class NuevoMaterialDialog extends JDialog {
     private JLabel fechaRegistroLabel;
     private JLabel referenciaLabel;
 
+    private JTextField claveField;
     private JTextField nombreField;
     private JTextField unidadField;
     private JTextField cantidadField;
@@ -46,7 +49,7 @@ public class NuevoMaterialDialog extends JDialog {
         initComponents();
         setupLayout();
         setupBehavior();
-        this.setSize(450, 500);
+        this.setSize(450, 600);
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }
@@ -56,6 +59,7 @@ public class NuevoMaterialDialog extends JDialog {
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 16));
         tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        claveLabel = new JLabel("Clave: ");
         nombreLabel = new JLabel("Nombre:");
         unidadLabel = new JLabel("Unidad:");
         cantidadLabel = new JLabel("Cantidad:");
@@ -64,6 +68,7 @@ public class NuevoMaterialDialog extends JDialog {
         fechaRegistroLabel = new JLabel("Fecha de Registro:");
         referenciaLabel = new JLabel("Referencia:");
 
+        claveField = new JTextField(15);
         nombreField = new JTextField(15);
         unidadField = new JTextField(10);
         cantidadField = new JTextField(8);
@@ -117,19 +122,27 @@ public class NuevoMaterialDialog extends JDialog {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JPanel datosPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        JPanel datosPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        datosPanel.add(claveLabel);
+        datosPanel.add(claveField);
         datosPanel.add(nombreLabel);
         datosPanel.add(nombreField);
+        
         datosPanel.add(unidadLabel);
         datosPanel.add(unidadField);
+        
         datosPanel.add(cantidadLabel);
         datosPanel.add(cantidadField);
+        
         datosPanel.add(origenLabel);
         datosPanel.add(origenBox);
+        
         datosPanel.add(numeroDocumentoLabel);
         datosPanel.add(numeroDocumentoField);
+        
         datosPanel.add(fechaRegistroLabel);
         datosPanel.add(fechaOrigenPicker);
+        
         datosPanel.add(referenciaLabel);
         datosPanel.add(referenciaContainer);
 
@@ -218,6 +231,7 @@ public class NuevoMaterialDialog extends JDialog {
                 String origen = (String) origenBox.getSelectedItem();
                 
                 HashMap<String, Object> material = new HashMap<>();
+                material.put("clave", claveField.getText().trim());
                 material.put("nombre", nombreField.getText().trim());
                 material.put("unidad", unidadField.getText().trim());
                 material.put("cantidad", cantidadField.getText().trim());

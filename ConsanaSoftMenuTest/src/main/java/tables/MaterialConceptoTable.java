@@ -23,6 +23,7 @@ public class MaterialConceptoTable extends BaseTable {
         // Inicializar el modelo con las columnas específicas
         initializeModel(new String[] {
             "ID",
+            "Clave",
             "Nombre",
             "Unidad",
             "Cantidad"
@@ -39,6 +40,7 @@ public class MaterialConceptoTable extends BaseTable {
         // Inicializar el modelo con las columnas específicas
         initializeModel(new String[] {
             "ID",
+            "Clave",
             "Nombre",
             "Unidad",
             "Cantidad"
@@ -49,13 +51,12 @@ public class MaterialConceptoTable extends BaseTable {
         configurarEditorCantidad();
     }
     
-    // 1. Añade este método para hacer editable solo la columna de cantidad
+    // método para hacer editable solo la columna de cantidad
     @Override
     public boolean isCellEditable(int row, int column) {
-        return column == 3; // Solo editable la columna "Cantidad" (índice 3)
+        return column == 4; // Solo editable la columna "Cantidad" (índice 4)
     }
 
-    // 2. Modifica el método configurarEditorCantidad() así:
     private void configurarEditorCantidad() {
         JTextField textField = new JTextField();
         textField.setHorizontalAlignment(JTextField.RIGHT); // Alineación derecha para números
@@ -86,7 +87,7 @@ public class MaterialConceptoTable extends BaseTable {
         };
 
         // Asigna el editor solo a la columna de Cantidad
-        getColumnModel().getColumn(3).setCellEditor(editor);
+        getColumnModel().getColumn(4).setCellEditor(editor);
 
         // Esto evita que otras columnas sean editables
         setDefaultEditor(Object.class, null);
@@ -100,6 +101,7 @@ public class MaterialConceptoTable extends BaseTable {
         if (dto != null) {
             model.addRow(new Object[]{
                 dto.getId(),
+                dto.getClave(),
                 dto.getNombre(),
                 dto.getUnidad(),
                 dto.getCantidad()
@@ -127,7 +129,7 @@ public class MaterialConceptoTable extends BaseTable {
         for (int i = 0; i < model.getRowCount(); i++) {
             Map<String, Object> material = new HashMap<>();
             material.put("id", model.getValueAt(i, 0)); // ID está en columna 0
-            material.put("cantidad", model.getValueAt(i, 3)); // Cantidad está en columna 3
+            material.put("cantidad", model.getValueAt(i, 4)); // Cantidad está en columna 3
             materiales.add(material);
         }
         
@@ -151,6 +153,7 @@ public class MaterialConceptoTable extends BaseTable {
             for (MaterialOutputDTO m : materiales) {
                 model.addRow(new Object[]{
                     m.getId(),
+                    m.getClave(),
                     m.getNombre(),
                     m.getUnidad(),
                     m.getCantidad()
@@ -163,7 +166,10 @@ public class MaterialConceptoTable extends BaseTable {
     
     @Override
     protected void ajustarTabla() {
-        setColumnMaxWidth(0, 40);  // ID
+        setColumnMinWidth(0, 0);  // ID
+        setColumnMaxWidth(0, 0);  // ID
+        
+        setColumnMaxWidth(1, 100); // Clave
         setColumnMaxWidth(2, 50);  // Unidad
         setColumnMaxWidth(3, 60);  // Cantidad
     }
