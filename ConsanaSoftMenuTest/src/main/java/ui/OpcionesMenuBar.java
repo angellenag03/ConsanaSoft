@@ -96,7 +96,7 @@ public class OpcionesMenuBar extends JMenuBar {
     
     private void mostrarAcercaDe(ActionEvent e) {
         JOptionPane.showMessageDialog(parentFrame, 
-            "CONSANA Soft\nVersión 1.3.1\n© Angel Sanchez 2025", 
+            "CONSANA Soft\nVersión 1.3.2\n© Angel Sanchez 2025", 
             "Acerca de", 
             JOptionPane.INFORMATION_MESSAGE);
     }

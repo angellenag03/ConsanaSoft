@@ -4,11 +4,13 @@ ui\AbrirObraDialog.class
 dto\MaterialSinIdDTO.class
 tables\MaterialesTable$1.class
 tables\ValeSalidaTable$1.class
+ui\AlmacenExistenciasDialog$1.class
 tables\HistorialMaterialTable$CantidadRenderer.class
 utils\HTTPManager$HttpMethod.class
 ui\NuevaObraDialog.class
 utils\DebugConsole$4.class
 ui\AddConceptoAObraDialog$2.class
+dto\MaterialConceptoDTO.class
 tables\MaterialGeneraValeTable$1.class
 ui\AbrirObraDialog$1.class
 utils\DebugConsole$1.class
@@ -16,6 +18,7 @@ ui\SeleccionarMaterialDialog.class
 utils\HTTPManager$HttpPatch.class
 ui\AlmacenDialog$1.class
 ui\AbrirObraDialog$2.class
+tables\FechasValesTable.class
 utils\DebugConsole$5.class
 tables\BaseTable$AlternatingRowRenderer.class
 ui\AlmacenExistenciasDialog$2.class
@@ -25,9 +28,11 @@ tables\ValeSalidaTable.class
 ui\MenuPanel.class
 dto\MaterialOutputDTO.class
 ui\AlmacenDialog.class
+tables\ExistenciasTable$1.class
 ui\NuevaObraDialog$1.class
 tables\MaterialConceptoTable$2.class
 tables\ObrasNombreFechaTable$1.class
+tables\FechasValesTable$1.class
 ui\InstalarMaterialObraDialog.class
 utils\DebugConsole$6.class
 tables\MaterialesTable.class
@@ -70,6 +75,7 @@ tables\HistorialMaterialTable.class
 tables\MaterialGeneraValeTable.class
 ui\OpcionesMenuBar.class
 tables\ObrasNombreFechaTable.class
+ui\InstalarMaterialesDialog.class
 tables\ExistenciasTable.class
 tables\MaterialObraTable$1.class
 dto\ConceptoDTO.class
@@ -91,4 +97,5 @@ ui\InstalarMaterialObraDialog$NumericDocumentFilter.class
 ui\SuministrarAlmacenDialog$1.class
 utils\DebugConsole$3.class
 secrets\Secret.class
+ui\ObraPanel$2.class
 tables\ConceptosTable$1$1.class
