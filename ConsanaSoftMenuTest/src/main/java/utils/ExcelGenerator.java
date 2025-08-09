@@ -377,7 +377,7 @@ public class ExcelGenerator {
     }
 
     public void exportJTablesToExcel(String reportTitle, int[] leftAlignedColumns, JTable... tables) {
-        exportJTablesToExcel(reportTitle, leftAlignedColumns, true, tables);
+        ExcelGenerator.this.exportJTablesToExcel(reportTitle, leftAlignedColumns, true, tables);
     }
     
     public void exportJTablesToExcel(String reportTitle, int[] leftAlignedColumns, boolean useTableColumnWidths, JTable... tables) {
@@ -459,7 +459,7 @@ public class ExcelGenerator {
         }
     }
     
-    public void exportJTablesToExcelWithCustomWidths(String reportTitle, int[] leftAlignedColumns, List<int[]> customPixelWidths, JTable... tables) {
+    public void exportJTablesToExcel(String reportTitle, int[] leftAlignedColumns, List<int[]> customPixelWidths, JTable... tables) {
         try {
             if (tables == null || tables.length == 0) {
                 JOptionPane.showMessageDialog(parentComponent, 
@@ -597,6 +597,6 @@ public class ExcelGenerator {
     }
     
     public void exportJTablesToExcel(String reportTitle, JTable... tables) {
-        exportJTablesToExcel(reportTitle, new int[]{0}, true, tables);
+        ExcelGenerator.this.exportJTablesToExcel(reportTitle, new int[]{0}, true, tables);
     }
 }

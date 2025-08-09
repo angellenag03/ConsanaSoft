@@ -6,16 +6,16 @@ import com.google.gson.reflect.TypeToken;
 import dto.MaterialSinIdDTO;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class ValeSalidaTable extends BaseTable {
     private String obraId;
     
-    public ValeSalidaTable(String obraId) {
+    public ValeSalidaTable() {
         super();
-        this.obraId = obraId;
-        
         initializeModel(new String[] {
+            "Clave",
             "Nombre",
             "Unidad",
             "Cantidad"
@@ -29,18 +29,19 @@ public class ValeSalidaTable extends BaseTable {
         clearTable();
     }
     
-    public void cargarDatosHoy() {
-        cargarDatos(obraId);
+    public void cargarDatosFechaHora(String obraId, String fechaHora) {
+        cargarDatos(obraId, fechaHora);
     }
     
-    public void cargarDatosSesion(String fecha) {
-        cargarDatos(obraId+"&fecha="+fecha);
-    }
-    
-    private void cargarDatos(String endpoint) {
+    private void cargarDatos(String endpoint1, String endpoint2) {
         try {
             clearTable();
-            String response = http.executeRequest("/historial/vale?obraId="+endpoint);
+            
+            String obraIdEncoded = URLEncoder.encode(endpoint1, "UTF-8");
+            String fechaHoraEncoded = URLEncoder.encode(endpoint2, "UTF-8");
+            
+            String response = http.executeRequest(
+                    "/historial/vale?obraId="+obraIdEncoded+"&fechaHora="+fechaHoraEncoded);
             Type vale = new TypeToken<List<MaterialSinIdDTO>>(){}.getType();
             List<MaterialSinIdDTO> materialesVale = gson.fromJson(response, vale);
             
@@ -60,9 +61,24 @@ public class ValeSalidaTable extends BaseTable {
     @Override
     protected void ajustarTabla() {
         setColumnMaxWidth(0, 120); // Clave
-        setColumnMaxWidth(1, 200);  // Nombre
+//        setColumnMaxWidth(1, 200);  // Nombre
         setColumnMaxWidth(2, 120); // Unidad
         setColumnMaxWidth(3, 60);  // Cantidad
     }
     
+    // En ValeSalidaTable.java, añade este método:
+    public void cargarDatosDesdeMaterialGeneraVale(MaterialGeneraValeTable sourceTable) {
+        clearTable();
+        for (int i = 0; i < sourceTable.getRowCount(); i++) {
+            Double cantidad = (Double) sourceTable.getValueAt(i, 5); // Columna "A Instalar"
+            if (cantidad > 0.0) {
+                model.addRow(new Object[]{
+                    sourceTable.getValueAt(i, 1), // Clave
+                    sourceTable.getValueAt(i, 2), // Nombre
+                    sourceTable.getValueAt(i, 3), // Unidad
+                    cantidad                     // Cantidad
+                });
+            }
+        }
+    }
 }

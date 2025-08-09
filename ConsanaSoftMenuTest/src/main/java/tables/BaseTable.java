@@ -3,6 +3,8 @@ package tables;
 import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -192,6 +194,10 @@ public abstract class BaseTable extends JTable {
      * @param context Contexto del error
      */
     protected void handleError(Exception e, String context) {
+        JOptionPane.showMessageDialog(
+                null, 
+                "Error en " + context + ": " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
         System.err.println("Error en " + context + ": " + e.getMessage());
         e.printStackTrace();
     }

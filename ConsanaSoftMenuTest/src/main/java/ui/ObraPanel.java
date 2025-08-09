@@ -3,6 +3,8 @@ package ui;
 import dto.ObraDTO;
 import tables.ConceptosObraTable;
 import tables.MaterialObraTable;
+import tables.FechasValesTable;
+import tables.ValeSalidaTable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -21,7 +23,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import tables.HistorialMaterialTable;
-import tables.ValeSalidaTable;
 import utils.ExcelGenerator;
 
 public class ObraPanel extends JPanel {
@@ -29,21 +30,18 @@ public class ObraPanel extends JPanel {
     private JButton salirButtonConceptos;
     private JButton salirButtonInsumos;
     private JButton aniadirButton;
-    
-    private JButton generarValeButton;
     private JButton suministrarButton;
     private JButton instalarButton;
     private JButton exportarButton;
+    private JButton exportarValesButton;
     
     private ConceptosObraTable conceptosTable;
     private MaterialObraTable materialesTable;
     private HistorialMaterialTable historialTable;
-    
     private ValeSalidaTable valeSalidaTable;
+    private FechasValesTable fechasValesTable;
     
     private JFrame parentFrame;
-    
-    
     private final ObraDTO obra;
     private final String fecha;
     
@@ -61,21 +59,25 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos = new JButton("Salir");
         aniadirButton = new JButton("Añadir Concepto");
         suministrarButton = new JButton("Suministrar");
-        instalarButton = new JButton("Instalar");
+        instalarButton = new JButton("Generar Vale");
         exportarButton = new JButton("Exportar");
-        generarValeButton = new JButton("Generar Vale");
+        exportarValesButton = new JButton("Exportar Vale");
+        
         conceptosTable = new ConceptosObraTable(obra.getId());
         materialesTable = new MaterialObraTable(obra.getId());
-        valeSalidaTable = new ValeSalidaTable(obra.getId());
         historialTable = new HistorialMaterialTable();
+        valeSalidaTable = new ValeSalidaTable();
+        fechasValesTable = new FechasValesTable(obra.getId());
         
         suministrarButton.setEnabled(false);
-        instalarButton.setEnabled(false);
+        exportarValesButton.setEnabled(false);
         
         // Configurar tamaño preferido de las tablas
         conceptosTable.setPreferredScrollableViewportSize(new Dimension(800, 300));
         materialesTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
         historialTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
+        valeSalidaTable.setPreferredScrollableViewportSize(new Dimension(600, 300));
+        fechasValesTable.setPreferredScrollableViewportSize(new Dimension(200, 300));
         
         // Listener para la selección de materiales
         materialesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -85,8 +87,22 @@ public class ObraPanel extends JPanel {
                     String materialNombre = materialesTable.getNombre();
                     if (materialNombre != null) {
                         suministrarButton.setEnabled(true);
-                        instalarButton.setEnabled(true); 
+                        exportarValesButton.setEnabled(true);
                         historialTable.cargarDatosNombreObra(obra.getId(), materialNombre);
+                    }
+                }
+            }
+        });
+        
+        // Listener para la selección de fechas de vales
+        fechasValesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = fechasValesTable.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        String fechaHora = (String) fechasValesTable.getValueAt(selectedRow, 0);
+                        valeSalidaTable.cargarDatosFechaHora(obra.getId(), fechaHora);
                     }
                 }
             }
@@ -99,7 +115,7 @@ public class ObraPanel extends JPanel {
         suministrarButton.addActionListener(this::suministrarMaterial);
         instalarButton.addActionListener(this::instalarMaterial);
         exportarButton.addActionListener(this::exportarInsumos);
-        generarValeButton.addActionListener(this::generarVale);
+        exportarValesButton.addActionListener(this::exportarVale);
     }
     
     private void setupUI() {
@@ -115,7 +131,6 @@ public class ObraPanel extends JPanel {
         insumosButtonPanel.add(suministrarButton);
         insumosButtonPanel.add(instalarButton);
         insumosButtonPanel.add(exportarButton);
-        insumosButtonPanel.add(generarValeButton);
         insumosButtonPanel.add(salirButtonInsumos);
         
         // Panel dividido HORIZONTAL para insumos
@@ -136,6 +151,24 @@ public class ObraPanel extends JPanel {
         conceptosPanel.add(conceptosButtonPanel, BorderLayout.NORTH);
         conceptosPanel.add(new JScrollPane(conceptosTable), BorderLayout.CENTER);
         
+        // Panel para la pestaña de Vales Generados
+        JPanel valesPanel = new JPanel(new BorderLayout());
+        
+        // Panel de botones para vales
+        JPanel valesButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        valesButtonPanel.add(exportarValesButton);
+        
+        // Split pane para las tablas de vales (20% fechas, 80% detalles)
+        JSplitPane valesSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        valesSplitPane.setLeftComponent(new JScrollPane(fechasValesTable));
+        valesSplitPane.setRightComponent(new JScrollPane(valeSalidaTable));
+        valesSplitPane.setDividerLocation(0.2);
+        valesSplitPane.setResizeWeight(0.2);
+        valesSplitPane.setContinuousLayout(true);
+        
+        valesPanel.add(valesButtonPanel, BorderLayout.NORTH);
+        valesPanel.add(valesSplitPane, BorderLayout.CENTER);
+        
         // Panel de pestañas
         JTabbedPane tabbedPane = new JTabbedPane();
         
@@ -144,6 +177,9 @@ public class ObraPanel extends JPanel {
         
         // Pestaña de insumos
         tabbedPane.addTab("Insumos", insumosPanel);
+        
+        // Nueva pestaña para Vales Generados
+        tabbedPane.addTab("Vales Generados", valesPanel);
         
         // Agregar componentes al panel principal
         this.add(tabbedPane, BorderLayout.CENTER);
@@ -169,52 +205,30 @@ public class ObraPanel extends JPanel {
     }
     
     private void instalarMaterial(ActionEvent e) {
-        InstalarMaterialObraDialog dialog = new InstalarMaterialObraDialog(parentFrame, obra.getId(), materialesTable.getId(), this);
+        InstalarMaterialesDialog dialog = new InstalarMaterialesDialog(obra.getId(), obra.getNombre(), parentFrame);
         dialog.setVisible(true);
+        materialesTable.cargarDatosIniciales();
     }
     
     public void actualizarTablas() {
         conceptosTable.cargarDatosIniciales();
         materialesTable.cargarDatosIniciales();
+        fechasValesTable.cargarDatosIniciales();
+        valeSalidaTable.cargarDatosIniciales();
         suministrarButton.setEnabled(false);
-        instalarButton.setEnabled(false);
-    }
-    
-    private void generarVale(ActionEvent e) {
-        String respuesta = preguntarTipoVale(parentFrame);
-        if(respuesta == null) {
-            return;
-        }
-        if(respuesta.equals("Hoy")){
-            valeSalidaTable.cargarDatosHoy();
-        }
-        if(respuesta.equals("Sesion")){
-            valeSalidaTable.cargarDatosSesion(fecha);
-        } 
-        
-        List<int[]> anchos = List.of(new int[]{200,65,60});
-        
-        ExcelGenerator.getInstance().exportJTablesToExcelWithCustomWidths(
-                obra.getNombre(), new int[]{0},anchos, valeSalidaTable);
+        exportarValesButton.setEnabled(false);
     }
     
     private void exportarInsumos(ActionEvent e) {
         List<int[]> anchos = List.of(new int[]{46, 326, 80, 80, 120, 120, 80, 80});
-        ExcelGenerator.getInstance().exportJTablesToExcelWithCustomWidths(
+        ExcelGenerator.getInstance().exportJTablesToExcel(
                 obra.getNombre(), new int[]{1}, anchos, materialesTable);
     }
     
-    private static String preguntarTipoVale(JFrame parent) {
-        Object[] opciones = {"Hoy", "Sesión"};
-        return (String)JOptionPane.showInputDialog(
-            parent,
-            "¿Deseas generar el vale de hoy o de la sesión actual?",
-            "Generar Vale",
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            opciones,
-            opciones[0] // Opción por defecto
-        );
+    private void exportarVale(ActionEvent e) {
+        List<int[]> anchos = List.of(new int[]{120, 200, 120, 60});
+        ExcelGenerator.getInstance().exportJTablesToExcel(
+                obra.getNombre(), new int[]{1}, anchos, valeSalidaTable);
     }
     
     private void regresarAlMenu(ActionEvent e) {

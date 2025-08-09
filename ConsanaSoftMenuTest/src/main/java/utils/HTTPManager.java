@@ -101,6 +101,21 @@ public final class HTTPManager {
         return execute(request);
     }
     
+    /**
+     * Método que recibe un JSON en forma de String para devolver una petición
+     * @param method
+     * @param endpoint
+     * @param jsonBody
+     * @return
+     * @throws IOException 
+     */
+    public String executeRequest(HttpMethod method, String endpoint, String jsonBody) throws IOException {
+        HttpEntityEnclosingRequestBase request = (HttpEntityEnclosingRequestBase) createRequest(method, buildUrl(endpoint));
+        addHeaders(request);
+        request.setEntity(new StringEntity(jsonBody, StandardCharsets.UTF_8));
+        return execute(request);
+    }
+    
     public String executeRequest(String endpoint) throws IOException {
         String url = buildUrl(endpoint);
         HttpRequestBase request = createRequest(HttpMethod.GET, url);
