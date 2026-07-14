@@ -11,10 +11,12 @@ ui\NuevaObraDialog.class
 utils\DebugConsole$4.class
 ui\AddConceptoAObraDialog$2.class
 dto\MaterialConceptoDTO.class
+ui\RemoverConceptosDialog$1.class
 tables\MaterialGeneraValeTable$1.class
 ui\AbrirObraDialog$1.class
 utils\DebugConsole$1.class
 ui\SeleccionarMaterialDialog.class
+ui\RemoverConceptosDialog.class
 utils\HTTPManager$HttpPatch.class
 ui\AlmacenDialog$1.class
 ui\AbrirObraDialog$2.class
@@ -62,6 +64,7 @@ utils\ImageLoader.class
 dto\ConceptoObraDTO.class
 ui\SuministrarMaterialObraDialog$NumericDocumentFilter.class
 dto\MaterialDTO.class
+ui\RemoverConceptosDialog$NumericDocumentFilter.class
 tables\ConceptosObraTable.class
 ui\MenuPanel$BotonesPanel.class
 tables\AlmacenTable$1.class

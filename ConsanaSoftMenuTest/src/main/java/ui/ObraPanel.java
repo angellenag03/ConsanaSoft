@@ -29,7 +29,8 @@ public class ObraPanel extends JPanel {
     
     private JButton salirButtonConceptos;
     private JButton salirButtonInsumos;
-    private JButton aniadirButton;
+    private JButton aniadirButton; // añadir concepto
+    private JButton removerButton; // remover concepto
     private JButton suministrarButton;
     private JButton instalarButton;
     private JButton exportarButton;
@@ -58,6 +59,8 @@ public class ObraPanel extends JPanel {
         salirButtonConceptos = new JButton("Salir");
         salirButtonInsumos = new JButton("Salir");
         aniadirButton = new JButton("Añadir Concepto");
+        removerButton = new JButton("Remover Concepto");
+        
         suministrarButton = new JButton("Suministrar");
         instalarButton = new JButton("Generar Vale");
         exportarButton = new JButton("Exportar");
@@ -112,6 +115,7 @@ public class ObraPanel extends JPanel {
         salirButtonConceptos.addActionListener(this::regresarAlMenu);
         salirButtonInsumos.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
+        removerButton.addActionListener(this::removerConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
         instalarButton.addActionListener(this::instalarMaterial);
         exportarButton.addActionListener(this::exportarInsumos);
@@ -124,6 +128,7 @@ public class ObraPanel extends JPanel {
         // Panel de botones para conceptos (añadir y salir)
         JPanel conceptosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         conceptosButtonPanel.add(aniadirButton);
+        conceptosButtonPanel.add(removerButton);
         conceptosButtonPanel.add(salirButtonConceptos);
         
         // Panel de botones para insumos (suministrar y salir)
@@ -186,7 +191,14 @@ public class ObraPanel extends JPanel {
     }
     
     private void addConcepto(ActionEvent e) {
-        AddConceptoAObraDialog d = new AddConceptoAObraDialog(parentFrame, obra.getId(), this);
+        AddConceptoAObraDialog d = new AddConceptoAObraDialog(parentFrame, 
+                obra.getId(), this);
+        d.setVisible(true);
+    }
+    
+    private void removerConcepto(ActionEvent e) {
+        RemoverConceptosDialog d = new RemoverConceptosDialog(parentFrame, 
+                obra.getId(), this, conceptosTable.getConceptoId());
         d.setVisible(true);
     }
     

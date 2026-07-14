@@ -23,7 +23,8 @@ public class ConceptosObraTable extends BaseTable {
             "Partida",
             "Nombre",
             "Unidad",
-            "Cantidad"
+            "Cantidad",
+            "ID"
         });
         
         ajustarTabla();
@@ -78,7 +79,8 @@ public class ConceptosObraTable extends BaseTable {
                     co.getPartida(),
                     co.getNombre(),
                     co.getUnidad(),
-                    co.getCantidad()
+                    co.getCantidad(),
+                    co.getId()
                 });
             }
         } catch (JsonSyntaxException | IOException e) {
@@ -92,5 +94,11 @@ public class ConceptosObraTable extends BaseTable {
         setColumnPreferredWidth(1, 1000);  // Nombre
         setColumnPreferredWidth(2, 20);    // Unidad
         setColumnPreferredWidth(3, 20);    // Cantidad
+        setColumnMaxWidth(4, 0);
+    }
+    
+    public String getConceptoId() {
+        Object value = getSelectedValue(4);
+        return value != null ? value.toString() : null;
     }
 }
