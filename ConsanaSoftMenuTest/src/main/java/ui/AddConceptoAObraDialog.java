@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -191,17 +193,23 @@ public class AddConceptoAObraDialog extends JDialog {
     private void realizarBusqueda() {
         addButton.setEnabled(false);
         editarButton.setEnabled(false);
-        String textoBusqueda = buscarField.getText().trim();
-        if(textoBusqueda.isEmpty()) {
+        String txtBusqueda = buscarField.getText().trim();
+        if(txtBusqueda.isEmpty()) {
             conceptosTable.cargarDatosIniciales();
             return;
         }
         
+        
         int tipoBusqueda = tipoBusquedaCombo.getSelectedIndex();
+        
+        // CODIFICAR TEXTO EN CASO DE NOMBRE
+        if(tipoBusqueda == 0)
+            txtBusqueda = URLEncoder.encode(txtBusqueda, StandardCharsets.UTF_8);
+        
         switch (tipoBusqueda) {
-            case 2 -> conceptosTable.cargarDatosPorId(textoBusqueda);
-            case 1 -> conceptosTable.cargarDatosPorClave(textoBusqueda);
-            case 0 -> conceptosTable.cargarDatosPorNombre(textoBusqueda);
+            case 2 -> conceptosTable.cargarDatosPorId(txtBusqueda);
+            case 1 -> conceptosTable.cargarDatosPorClave(txtBusqueda);
+            case 0 -> conceptosTable.cargarDatosPorNombre(txtBusqueda);
             default -> throw new AssertionError();
         }
     }
@@ -291,8 +299,7 @@ public class AddConceptoAObraDialog extends JDialog {
     private ConceptoDTO getConcepto() {
         try {
             String id = (String) conceptosTable.getValueAt(conceptosTable.getSelectedRow(), 0);
-            String conceptoJson = http.executeRequest(
-                    HTTPManager.HttpMethod.GET, "/concepto/", id);
+            String conceptoJson = http.executeRequest("/concepto/"+id);
             ConceptoDTO concepto = gson.fromJson(conceptoJson, ConceptoDTO.class);
             
             return concepto;
