@@ -28,7 +28,7 @@ public class FechasValesTable extends BaseTable {
         try {
             clearTable();
             String response = http.executeRequest(
-                    "/historial/fechas?obraId="+endpoint);
+                    "/historial/material/fechas?obraId="+endpoint);
             Type vale = new TypeToken<List<String>>(){}.getType();
             List<String> fechas = gson.fromJson(response, vale);
             
@@ -42,7 +42,7 @@ public class FechasValesTable extends BaseTable {
     
     @Override
     protected void ajustarTabla() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

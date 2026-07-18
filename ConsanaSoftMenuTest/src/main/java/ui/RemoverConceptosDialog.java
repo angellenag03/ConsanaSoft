@@ -31,7 +31,7 @@ import utils.HTTPManager;
  */
 public class RemoverConceptosDialog extends JDialog {
     private final String obraId;
-    private final String conceptoId;
+    private final Long conceptoId;
     private final ObraPanel obraPanel;
     
     private JTextField cantidadField;
@@ -40,7 +40,7 @@ public class RemoverConceptosDialog extends JDialog {
     private final HTTPManager http = HTTPManager.getInstance();
     private final Gson gson = new Gson();
     
-    public RemoverConceptosDialog(JFrame parent, String obraId, ObraPanel obraPanel, String conceptoId) {
+    public RemoverConceptosDialog(JFrame parent, String obraId, ObraPanel obraPanel, Long conceptoId) {
         super(parent, true);
         this.obraId = obraId;
         this.conceptoId = conceptoId;
@@ -120,7 +120,7 @@ public class RemoverConceptosDialog extends JDialog {
                 remover
             );
             
-            if (response != null && response.toLowerCase().contains("éxito")) {
+            if (http.isSatusSuccess()) {
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, 

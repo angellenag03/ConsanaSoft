@@ -1,6 +1,7 @@
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\com\mycompany\consanasoftmenutest\ConsanaSoftMenuTest.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\AbrirObraDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\MenuFrame.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\HistorialConceptoDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialConceptoDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialGeneraValeDTO.java
@@ -8,6 +9,7 @@ D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\Mater
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\secrets\Secret.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\ConceptosObraTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\SuministrarAlmacenDialog.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\GestorConceptosDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\ConceptosTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\BaseTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\ConceptoConMaterialDTO.java
@@ -34,7 +36,9 @@ D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\Opcion
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\AlmacenTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\utils\ExcelGenerator.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\ObraDTO.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\DesInstalarConceptoDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\SuministrarMaterialObraDialog.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\HistorialConceptosTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\NuevaObraDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialOutputDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\ExistenciasTable.java

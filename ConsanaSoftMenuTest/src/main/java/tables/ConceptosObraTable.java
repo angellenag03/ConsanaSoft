@@ -24,6 +24,8 @@ public class ConceptosObraTable extends BaseTable {
             "Nombre",
             "Unidad",
             "Cantidad",
+            "Instalado",
+            "Por Instalar",
             "ID"
         });
         
@@ -80,6 +82,8 @@ public class ConceptosObraTable extends BaseTable {
                     co.getNombre(),
                     co.getUnidad(),
                     co.getCantidad(),
+                    co.getInstalado(),
+                    co.getPorInstalar(),
                     co.getId()
                 });
             }
@@ -94,11 +98,27 @@ public class ConceptosObraTable extends BaseTable {
         setColumnPreferredWidth(1, 1000);  // Nombre
         setColumnPreferredWidth(2, 20);    // Unidad
         setColumnPreferredWidth(3, 20);    // Cantidad
-        setColumnMaxWidth(4, 0);
+        setColumnPreferredWidth(4, 20);    // Instalado
+        setColumnPreferredWidth(5, 20);    // Por Instalar
+        setColumnMaxWidth(6, 0); // ID
     }
     
-    public String getConceptoId() {
+    public Long getConceptoId() {
+        Object value = getSelectedValue(6);
+        return value != null ? Long.parseLong(value.toString()) : null;
+    }
+    
+    public int getCantidad() {
+        Object value = getSelectedValue(3);
+        return value != null ? Integer.parseInt(value.toString()) : null;
+    }
+    
+    public int getInstalado() {
         Object value = getSelectedValue(4);
-        return value != null ? value.toString() : null;
+        return value != null ? Integer.parseInt(value.toString()) : null;
+    }
+    
+    public boolean isFullInstalado() {
+        return getCantidad() == getInstalado();
     }
 }

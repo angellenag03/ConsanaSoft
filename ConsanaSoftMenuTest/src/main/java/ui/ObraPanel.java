@@ -16,12 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import tables.HistorialConceptosTable;
 import tables.HistorialMaterialTable;
 import utils.ExcelGenerator;
 
@@ -31,12 +33,15 @@ public class ObraPanel extends JPanel {
     private JButton salirButtonInsumos;
     private JButton aniadirButton; // añadir concepto
     private JButton removerButton; // remover concepto
+    private JButton instConceptoButton;
+    private JButton uninstConceptoButton;
     private JButton suministrarButton;
-    private JButton instalarButton;
+    private JButton instalarMaterialButton;
     private JButton exportarButton;
     private JButton exportarValesButton;
     
     private ConceptosObraTable conceptosTable;
+    private HistorialConceptosTable historialConceptosTable;
     private MaterialObraTable materialesTable;
     private HistorialMaterialTable historialTable;
     private ValeSalidaTable valeSalidaTable;
@@ -60,23 +65,31 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos = new JButton("Salir");
         aniadirButton = new JButton("Añadir Concepto");
         removerButton = new JButton("Remover Concepto");
-        
+        instConceptoButton = new JButton("Instalar");
+        uninstConceptoButton = new JButton("Desinstalar");
         suministrarButton = new JButton("Suministrar");
-        instalarButton = new JButton("Generar Vale");
+        instalarMaterialButton = new JButton("Generar Vale");
         exportarButton = new JButton("Exportar");
         exportarValesButton = new JButton("Exportar Vale");
         
         conceptosTable = new ConceptosObraTable(obra.getId());
+        historialConceptosTable = new HistorialConceptosTable();
         materialesTable = new MaterialObraTable(obra.getId());
         historialTable = new HistorialMaterialTable();
         valeSalidaTable = new ValeSalidaTable();
         fechasValesTable = new FechasValesTable(obra.getId());
         
+        instConceptoButton.setEnabled(false);
+        uninstConceptoButton.setEnabled(false);
+        
         suministrarButton.setEnabled(false);
         exportarValesButton.setEnabled(false);
         
+        
         // Configurar tamaño preferido de las tablas
-        conceptosTable.setPreferredScrollableViewportSize(new Dimension(800, 300));
+        conceptosTable.setPreferredScrollableViewportSize(new Dimension(600, 300));
+        historialConceptosTable.setPreferredScrollableViewportSize(new Dimension(400,300));
+        
         materialesTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
         historialTable.setPreferredScrollableViewportSize(new Dimension(400, 300));
         valeSalidaTable.setPreferredScrollableViewportSize(new Dimension(600, 300));
@@ -92,6 +105,29 @@ public class ObraPanel extends JPanel {
                         suministrarButton.setEnabled(true);
                         exportarValesButton.setEnabled(true);
                         historialTable.cargarDatosNombreObra(obra.getId(), materialNombre);
+                    }
+                }
+            }
+        });
+        
+        // Listener para la seleccion de conceptos
+        conceptosTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                // por motivos prácticos cada que cambias de columna se desactivan los botones
+                instConceptoButton.setEnabled(false);
+                uninstConceptoButton.setEnabled(false);
+                if (!e.getValueIsAdjusting()) {
+                    Long conceptoId = conceptosTable.getConceptoId();
+                    if (conceptoId != null) {
+                        if(!conceptosTable.isFullInstalado()) {
+                            instConceptoButton.setEnabled(true);
+                        }
+                        if(conceptosTable.getInstalado()!= 0) {
+                            uninstConceptoButton.setEnabled(true);
+                        }
+                        removerButton.setEnabled(true);
+                        historialConceptosTable.cargarDatosConceptoObra(conceptoId, obra.getId());
                     }
                 }
             }
@@ -116,8 +152,10 @@ public class ObraPanel extends JPanel {
         salirButtonInsumos.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
         removerButton.addActionListener(this::removerConcepto);
+        instConceptoButton.addActionListener(this::instalarConcepto);
+        uninstConceptoButton.addActionListener(this::desinstalarConcepto);
         suministrarButton.addActionListener(this::suministrarMaterial);
-        instalarButton.addActionListener(this::instalarMaterial);
+        instalarMaterialButton.addActionListener(this::instalarMaterial);
         exportarButton.addActionListener(this::exportarInsumos);
         exportarValesButton.addActionListener(this::exportarVale);
     }
@@ -129,12 +167,14 @@ public class ObraPanel extends JPanel {
         JPanel conceptosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         conceptosButtonPanel.add(aniadirButton);
         conceptosButtonPanel.add(removerButton);
+        conceptosButtonPanel.add(instConceptoButton);
+        conceptosButtonPanel.add(uninstConceptoButton);
         conceptosButtonPanel.add(salirButtonConceptos);
         
         // Panel de botones para insumos (suministrar y salir)
         JPanel insumosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         insumosButtonPanel.add(suministrarButton);
-        insumosButtonPanel.add(instalarButton);
+        insumosButtonPanel.add(instalarMaterialButton);
         insumosButtonPanel.add(exportarButton);
         insumosButtonPanel.add(salirButtonInsumos);
         
@@ -155,6 +195,7 @@ public class ObraPanel extends JPanel {
         JPanel conceptosPanel = new JPanel(new BorderLayout());
         conceptosPanel.add(conceptosButtonPanel, BorderLayout.NORTH);
         conceptosPanel.add(new JScrollPane(conceptosTable), BorderLayout.CENTER);
+        conceptosPanel.add(new JScrollPane(historialConceptosTable), BorderLayout.EAST);
         
         // Panel para la pestaña de Vales Generados
         JPanel valesPanel = new JPanel(new BorderLayout());
@@ -202,6 +243,18 @@ public class ObraPanel extends JPanel {
         d.setVisible(true);
     }
     
+    private void instalarConcepto(ActionEvent e) {
+        DesInstalarConceptoDialog d = new DesInstalarConceptoDialog(parentFrame, true, 
+                obra.getId(), this, conceptosTable.getConceptoId());
+        d.setVisible(true);
+    }
+    
+    private void desinstalarConcepto(ActionEvent e) {
+        DesInstalarConceptoDialog d = new DesInstalarConceptoDialog(parentFrame, false, 
+                obra.getId(), this, conceptosTable.getConceptoId());
+        d.setVisible(true);
+    }
+    
     private void suministrarMaterial(ActionEvent e) {
         String materialId = materialesTable.getId();
         System.out.println(materialId);
@@ -224,11 +277,15 @@ public class ObraPanel extends JPanel {
     
     public void actualizarTablas() {
         conceptosTable.cargarDatosIniciales();
+        historialConceptosTable.cargarDatosIniciales();
         materialesTable.cargarDatosIniciales();
         fechasValesTable.cargarDatosIniciales();
         valeSalidaTable.cargarDatosIniciales();
         suministrarButton.setEnabled(false);
         exportarValesButton.setEnabled(false);
+        removerButton.setEnabled(false);
+        instConceptoButton.setEnabled(false);
+        uninstConceptoButton.setEnabled(false);
     }
     
     private void exportarInsumos(ActionEvent e) {

@@ -26,8 +26,12 @@ public class OpcionesMenuBar extends JMenuBar {
     private JMenuItem revisarAlmacen;
     private JMenuItem revisarExistencias;
     
+    // CONCEPTOS
+    private JMenuItem abrirGestorConceptos;
+    
     private final JMenu menuObra;
     private final JMenu menuMaterial;
+    private final JMenu menuConcepto;
     private final JMenu menuAcerca;
     private final JFrame parentFrame;  // Referencia al frame padre
     
@@ -38,10 +42,12 @@ public class OpcionesMenuBar extends JMenuBar {
         this.parentFrame = parentFrame;
         menuObra = new JMenu("Obra");
         menuMaterial = new JMenu("Almacén");
+        menuConcepto = new JMenu("Conceptos");
         menuAcerca = new JMenu("Acerca de");
         initComponents();
         this.add(menuObra);
         this.add(menuMaterial);
+        this.add(menuConcepto);
         this.add(menuAcerca);
     }
     
@@ -57,6 +63,9 @@ public class OpcionesMenuBar extends JMenuBar {
         ingresarMaterial = new JMenuItem("Ingresar Material al Almacén");
         revisarAlmacen = new JMenuItem("Revisar Almacén");
         revisarExistencias = new JMenuItem("Revisar Existencias");
+        
+        // CONCEPTOS
+        abrirGestorConceptos = new JMenuItem("Abrir gestor de conceptos");
         
         acercaDe = new JMenuItem("Acerca de");
         
@@ -82,6 +91,9 @@ public class OpcionesMenuBar extends JMenuBar {
         menuMaterial.add(revisarAlmacen);
         menuMaterial.add(revisarExistencias);
         
+        // CONCEPTOS
+        menuConcepto.add(abrirGestorConceptos);
+        
         // ACERCA DE
         menuAcerca.add(acercaDe);
         
@@ -92,11 +104,12 @@ public class OpcionesMenuBar extends JMenuBar {
         ingresarMaterial.addActionListener(this::ingresarMaterial);
         revisarAlmacen.addActionListener(this::revisarAlmacen);
         revisarExistencias.addActionListener(this::revisarExistencias);
+        abrirGestorConceptos.addActionListener(this::abrirGestorConceptos);
     }
     
     private void mostrarAcercaDe(ActionEvent e) {
         JOptionPane.showMessageDialog(parentFrame, 
-            "CONSANA Soft\nVersión 1.3.2\n© Angel Sanchez 2025", 
+            "CONSANA Soft\nTodos los derechos Reservados\n© Angel Sanchez 2025", 
             "Acerca de", 
             JOptionPane.INFORMATION_MESSAGE);
     }
@@ -141,6 +154,11 @@ public class OpcionesMenuBar extends JMenuBar {
     
     private void revisarExistencias(ActionEvent e) {
         AlmacenExistenciasDialog dialog = new AlmacenExistenciasDialog(parentFrame);
+        dialog.setVisible(true);
+    }
+    
+    private void abrirGestorConceptos(ActionEvent e){
+        GestorConceptosDialog dialog = new GestorConceptosDialog(parentFrame);
         dialog.setVisible(true);
     }
 }

@@ -242,4 +242,12 @@ public final class HTTPManager {
     private String codificarDato(String data) {
         return URLEncoder.encode(data, StandardCharsets.UTF_8);
     }
+    
+    public int getLastStatusCode() {
+        return statusCode;
+    }
+    
+    public boolean isSatusSuccess(){
+        return statusCode >= 200 && statusCode < 300;
+    }
 }

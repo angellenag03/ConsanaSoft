@@ -44,7 +44,7 @@ public class HistorialMaterialTable extends BaseTable {
     public void cargarDatosNombre(String nombre) {
         try {
             nombre = URLEncoder.encode(nombre, "UTF-8");
-            cargarDatos("/historial/list?nombre="+nombre);
+            cargarDatos("/historial/material/list?nombre="+nombre);
             packColumns(); // Ajustar el ancho de las columnas después de cargar los datos
         } catch (Exception e) {
             handleError(e, "cargarDatosNombre HistorialMaterialTable");
@@ -55,7 +55,7 @@ public class HistorialMaterialTable extends BaseTable {
         try {
             nombre = URLEncoder.encode(nombre, StandardCharsets.UTF_8);
             obraId = URLEncoder.encode(obraId, StandardCharsets.UTF_8);
-            cargarDatos("/historial/list?obraId="+obraId+"&nombre="+nombre);
+            cargarDatos("/historial/material/list?obraId="+obraId+"&nombre="+nombre);
             packColumns(); // Ajustar el ancho de las columnas después de cargar los datos
         } catch (Exception e) {
             handleError(e, "cargarDatosNombreObra HistorialMaterialTable");
