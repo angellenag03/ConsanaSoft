@@ -42,4 +42,9 @@ public class ImageLoader {
         }
         return new ImageIcon(img);
     }
+    
+    public static ImageIcon cargarIcono(String ruta) {
+        Image img = getImagen(ruta);
+        return img != null ? new ImageIcon(img) : null;
+    }
 }

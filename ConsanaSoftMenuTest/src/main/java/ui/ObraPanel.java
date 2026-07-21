@@ -1,5 +1,7 @@
 package ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import dto.ObraDTO;
 import tables.ConceptosObraTable;
 import tables.MaterialObraTable;
@@ -61,16 +63,16 @@ public class ObraPanel extends JPanel {
     }
     
     private void initComponents() {
-        salirButtonConceptos = new JButton("Salir");
-        salirButtonInsumos = new JButton("Salir");
-        aniadirButton = new JButton("Añadir Concepto");
-        removerButton = new JButton("Remover Concepto");
-        instConceptoButton = new JButton("Instalar");
-        uninstConceptoButton = new JButton("Desinstalar");
-        suministrarButton = new JButton("Suministrar");
-        instalarMaterialButton = new JButton("Generar Vale");
-        exportarButton = new JButton("Exportar");
-        exportarValesButton = new JButton("Exportar Vale");
+        salirButtonConceptos = new JButton("Salir", new FlatSVGIcon("icons/door-exit.svg"));
+        salirButtonInsumos = new JButton("Salir", new FlatSVGIcon("icons/door-exit.svg"));
+        aniadirButton = new JButton("Añadir Concepto", new FlatSVGIcon("icons/chevrons-up.svg"));
+        removerButton = new JButton("Remover Concepto", new FlatSVGIcon("icons/chevrons-down.svg"));
+        instConceptoButton = new JButton("Instalar", new FlatSVGIcon("icons/square-chevrons-up.svg"));
+        uninstConceptoButton = new JButton("Desinstalar", new FlatSVGIcon("icons/square-chevrons-down.svg"));
+        suministrarButton = new JButton("Suministrar", new FlatSVGIcon("icons/basket-plus.svg"));
+        instalarMaterialButton = new JButton("Generar Vale", new FlatSVGIcon("icons/square-chevrons-up.svg"));
+        exportarButton = new JButton("Exportar", new FlatSVGIcon("icons/file-spreadsheet.svg"));
+        exportarValesButton = new JButton("Exportar Vale", new FlatSVGIcon("icons/file-spreadsheet.svg"));
         
         conceptosTable = new ConceptosObraTable(obra.getId());
         historialConceptosTable = new HistorialConceptosTable();

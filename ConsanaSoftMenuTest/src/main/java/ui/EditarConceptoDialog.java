@@ -1,5 +1,6 @@
 package ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import dto.ConceptoDTO;
 import utils.HTTPManager;
 import java.awt.BorderLayout;
@@ -50,10 +51,13 @@ public class EditarConceptoDialog extends JDialog {
     
     private void initComponents() {
         claveField = new JTextField(concepto.getClave(), 25); // Aumenté el ancho de 20 a 25 caracteres
+        claveField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Clave");
         
         nombreArea = new JTextArea(concepto.getNombre(), 5, 25); // Aumenté el ancho de 20 a 25 caracteres
         nombreArea.setLineWrap(true);
         nombreArea.setWrapStyleWord(true);
+        nombreArea.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nombre");
+        
         
         unidadBox = new JComboBox<>(new String[]{"MT", "PZA", "LOTE", "KM"});
         unidadBox.setSelectedItem(concepto.getUnidad());

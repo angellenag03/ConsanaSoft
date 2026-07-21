@@ -1,29 +1,35 @@
 
 package utils;
 
+import com.sun.tools.javac.Main;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 public class FontSetter {
     
-    public static void setDefaultFontToBahnschrift() {
+    public static void setDefaultFont() {
         try {
-            // Primero intentamos cargar Bahnschrift
-            Font bahnschrift = Font.createFont(Font.TRUETYPE_FONT, 
-                new File("C:/Windows/Fonts/bahnschriftrrrrr.ttf")).deriveFont(12f);
-            
-            // Registrar la fuente en el entorno gráfico
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(bahnschrift);
-            
-            // Establecer como fuente por defecto para componentes Swing
-            setUIFont(new FontUIResource(bahnschrift));
-            
+            // Cargar la fuente desde src/main/resources
+            try (InputStream is = FontSetter.class.getResourceAsStream("/IBMPlexSans-Regular.ttf")) {
+                if (is == null) {
+                    throw new IOException("No se encontró la fuente");
+                }
+                Font font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(13f);
+                System.out.println(is.toString());
+                // Registrar la fuente en el entorno gráfico
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+                // Establecer como fuente por defecto para componentes Swing
+                setUIFont(new FontUIResource(font));
+            }
+
         } catch (Exception e) {
             // Si falla, usar una fuente sans-serif por defecto
-            System.err.println("No se pudo cargar Bahnschrift. Usando fuente por defecto.");
+            System.err.println("No se pudo cargar la fuente. Usando fuente por defecto.");
             setUIFont(new FontUIResource("SansSerif", Font.PLAIN, 12));
         }
     }

@@ -1,11 +1,13 @@
 package ui;
+import com.formdev.flatlaf.*;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
-import mdlaf.MaterialLookAndFeel;
-import mdlaf.themes.MaterialOceanicTheme;
 import utils.DebugConsole;
 import utils.ImageLoader;
+
+import java.awt.Color;
+import java.awt.Insets;
 
 public class MenuFrame extends JFrame {
     private final OpcionesMenuBar bar;
@@ -13,17 +15,18 @@ public class MenuFrame extends JFrame {
     
     public MenuFrame() throws HeadlessException {
         super("ConsanaSoft");
-        this.menuPanel = new MenuPanel(this);
+        
         // Configuración inicial del frame
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
         this.setIconImage(ImageLoader.getImagen("Logo.png"));
-        this.add(menuPanel);
-        
         // Inicializar consola ANTES de cargar tema
         configurarConsolaDebug();
         cargarTema();
+        
+        this.menuPanel = new MenuPanel(this);
+        this.add(menuPanel);
         
         bar = new OpcionesMenuBar(this);
         this.setJMenuBar(bar);
@@ -72,10 +75,21 @@ public class MenuFrame extends JFrame {
     
     private void cargarTema() {
         try {
-            UIManager.setLookAndFeel(new MaterialLookAndFeel(new MaterialOceanicTheme()));
+//            UIManager.setLookAndFeel(new FlatMacLightLaf());
+            UIManager.put("Table.background", new Color(240,240,250));
+            UIManager.put("Component.arrowType", "triangle");
+            // SCROLLBAR
+            UIManager.put( "ScrollBar.trackArc", 999 );
+            UIManager.put( "ScrollBar.thumbArc", 999 );
+            UIManager.put( "ScrollBar.trackInsets", new Insets( 2, 4, 2, 4 ) );
+            UIManager.put( "ScrollBar.thumbInsets", new Insets( 2, 2, 2, 2 ) );
+            // TEXTCOMPONENT (JTextField)
+            UIManager.put("TextComponent.arc", 12);
+
+            FlatLightLaf.setup();
             SwingUtilities.updateComponentTreeUI(this);
             DebugConsole.log("✓ Tema del sistema cargado correctamente");
-        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             DebugConsole.logError("✗ Error al cargar el tema: " + ex.getMessage());
             DebugConsole.logException(ex);
         } 

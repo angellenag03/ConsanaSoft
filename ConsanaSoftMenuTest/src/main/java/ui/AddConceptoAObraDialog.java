@@ -1,5 +1,7 @@
 package ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.google.gson.Gson;
 import dto.ConceptoDTO;
 import utils.HTTPManager;
@@ -41,7 +43,7 @@ public class AddConceptoAObraDialog extends JDialog {
     
     private JPanel infoPanel;
     private JLabel idLabel, claveLabel, nombreLabel, cantidadLabel, unidadLabel; 
-    private JButton addButton, editarButton, crearButton, consultarButton, cancelarButton, buscarButton;
+    private JButton addButton, editarButton, crearButton, consultarButton, cancelarButton; //buscarButton;
     private JTextField buscarField, cantidadField;
     private JComboBox<String> tipoBusquedaCombo;
     private final ObraPanel obraPanel;
@@ -81,7 +83,9 @@ public class AddConceptoAObraDialog extends JDialog {
         // Componentes de búsqueda
         buscarLabel = new JLabel("Buscar por:");
         buscarField = new JTextField(25);
-        buscarButton = new JButton("Buscar");
+        buscarField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar");
+        buscarField.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("icons/search.svg"));
+//        buscarButton = new JButton("Buscar");
         tipoBusquedaCombo = new JComboBox<>(new String[]{"Nombre", "Clave", "ID"});
         cantidadField = new JTextField(6);
         crearButton = new JButton("Crear Nuevo");
@@ -93,14 +97,14 @@ public class AddConceptoAObraDialog extends JDialog {
         
         // Botones
         
-        consultarButton = new JButton("Consultar Materiales");
+        consultarButton = new JButton("Consultar Materiales", new FlatSVGIcon("icons/matrix.svg"));
         consultarButton.setEnabled(false);
-        addButton = new JButton("Añadir"); 
+        addButton = new JButton("Añadir", new FlatSVGIcon("icons/file-plus.svg")); 
         addButton.setEnabled(false);
-        editarButton = new JButton("Editar");
+        editarButton = new JButton("Editar", new FlatSVGIcon("icons/edit.svg"));
         editarButton.setEnabled(false);
-        cancelarButton = new JButton("Cancelar");
-        buscarButton = new JButton("Buscar");
+        cancelarButton = new JButton("Cancelar", new FlatSVGIcon("icons/x.svg"));
+//        buscarButton = new JButton("Buscar");
         
 //        addButton.setPreferredSize(new Dimension(85, 25));
 //        editarButton.setPreferredSize(new Dimension(85, 25));
@@ -118,7 +122,7 @@ public class AddConceptoAObraDialog extends JDialog {
         searchPanel.add(buscarLabel);
         searchPanel.add(tipoBusquedaCombo);
         searchPanel.add(buscarField);
-        searchPanel.add(buscarButton);
+//        searchPanel.add(buscarButton);
         searchPanel.add(crearButton);
         
         searchPanel.add(cantidadLabel);
@@ -167,7 +171,7 @@ public class AddConceptoAObraDialog extends JDialog {
         addButton.addActionListener(this::addConcepto);
         editarButton.addActionListener(this::editarConcepto);
         crearButton.addActionListener(this::crearConcepto);
-        buscarButton.addActionListener(e -> realizarBusqueda());
+//        buscarButton.addActionListener(e -> realizarBusqueda());
         
         buscarField.addKeyListener(new KeyAdapter() {
             @Override

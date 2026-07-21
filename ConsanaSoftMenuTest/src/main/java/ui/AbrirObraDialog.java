@@ -1,5 +1,7 @@
 package ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import tables.ObrasNombreFechaTable;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -28,7 +30,7 @@ public class AbrirObraDialog extends JDialog {
     private JLabel fechaModificacionLabel;
     private JButton abrirButton;
     private JButton cancelarButton;
-    private JButton buscarButton;
+//    private JButton buscarButton;
     private JTextField buscarField;
     private JComboBox<String> tipoBusquedaCombo;
     
@@ -64,8 +66,10 @@ public class AbrirObraDialog extends JDialog {
         
         // Componentes de búsqueda
         buscarLabel = new JLabel("Buscar por:");
-        buscarField = new JTextField(25);
-        buscarButton = new JButton("Buscar");
+        buscarField = new JTextField(35);
+        buscarField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar");
+        buscarField.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("icons/search.svg"));
+//        buscarButton = new JButton("Buscar");
         tipoBusquedaCombo = new JComboBox<>(new String[]{"Nombre", "Clave"});
         
         infoPanel.add(numObraLabel);
@@ -76,12 +80,13 @@ public class AbrirObraDialog extends JDialog {
         infoPanel.add(fechaModificacionLabel);
         
         // Botones
-        abrirButton = new JButton("Abrir"); abrirButton.setEnabled(false);
-        cancelarButton = new JButton("Cancelar");
+        abrirButton = new JButton("Abrir", new FlatSVGIcon("icons/eye.svg")); 
+        abrirButton.setEnabled(false);
+        cancelarButton = new JButton("Cancelar", new FlatSVGIcon("icons/x.svg"));
         
-        abrirButton.setPreferredSize(new Dimension(85, 25));
-        cancelarButton.setPreferredSize(new Dimension(85, 25));
-        buscarButton.setPreferredSize(new Dimension(85, 25));
+//        abrirButton.setPreferredSize(new Dimension(85, 25));
+//        cancelarButton.setPreferredSize(new Dimension(85, 25));
+//        buscarButton.setPreferredSize(new Dimension(85, 25));
     }
     
     private void setupLayout() {
@@ -93,7 +98,7 @@ public class AbrirObraDialog extends JDialog {
         searchPanel.add(buscarLabel);
         searchPanel.add(buscarField);
         searchPanel.add(tipoBusquedaCombo);
-        searchPanel.add(buscarButton);
+//        searchPanel.add(buscarButton);
         
         // Panel central (tabla e información)
         JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
@@ -130,7 +135,7 @@ public class AbrirObraDialog extends JDialog {
         abrirButton.addActionListener(this::abrirObraSeleccionada);
         
         // Comportamiento del botón Buscar
-        buscarButton.addActionListener(e -> realizarBusqueda());
+//        buscarButton.addActionListener(e -> realizarBusqueda());
         
         // Buscar al presionar Enter en el campo de búsqueda
         buscarField.addKeyListener(new KeyAdapter() {

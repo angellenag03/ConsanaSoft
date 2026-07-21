@@ -1,5 +1,7 @@
 package ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.google.gson.Gson;
 import dto.ConceptoDTO;
 import tables.ConceptosTable;
@@ -12,29 +14,20 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import javax.swing.AbstractAction;
 import javax.swing.SwingConstants;
 import tables.MaterialConceptoTable;
@@ -49,13 +42,13 @@ public class GestorConceptosDialog extends JDialog {
     
     private JPanel infoPanel;
     private JLabel idLabel, claveLabel, nombreLabel, unidadLabel; 
-    private JButton editarButton, crearButton, consultarButton, cancelarButton, buscarButton;
+    private JButton editarButton, crearButton, consultarButton, cancelarButton; // buscarButton
     private JTextField buscarField;
     private JComboBox<String> tipoBusquedaCombo;
     private JFrame parentFrame;
     
     public GestorConceptosDialog(JFrame parentFrame) {
-        super(parentFrame, "Añadir Concepto", true);
+        super(parentFrame, "Gestor de Conceptos", true);
         this.gson = new Gson();
         initComponents();
         setupLayout();
@@ -84,9 +77,12 @@ public class GestorConceptosDialog extends JDialog {
         // Componentes de búsqueda
         buscarLabel = new JLabel("Buscar por:");
         buscarField = new JTextField(25);
-        buscarButton = new JButton("Buscar");
+        buscarField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar");
+        buscarField.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("icons/search.svg"));
+//        buscarButton = new JButton("Buscar");
         tipoBusquedaCombo = new JComboBox<>(new String[]{"Nombre", "Clave", "ID"});
-        crearButton = new JButton("Crear Nuevo");
+        crearButton = new JButton("Crear Nuevo", new FlatSVGIcon("icons/file-plus.svg"));
+//        crearButton.putClientProperty(FlatClientProperties., this);
         
         infoPanel.add(idLabel);
         infoPanel.add(claveLabel);
@@ -94,18 +90,13 @@ public class GestorConceptosDialog extends JDialog {
         
         // Botones
         
-        consultarButton = new JButton("Consultar Materiales");
+        consultarButton = new JButton("Consultar Materiales", new FlatSVGIcon("icons/matrix.svg"));
         consultarButton.setEnabled(false);
-        editarButton = new JButton("Editar");
+        editarButton = new JButton("Editar", new FlatSVGIcon("icons/edit.svg"));
         editarButton.setEnabled(false);
-        cancelarButton = new JButton("Cancelar");
-        buscarButton = new JButton("Buscar");
-        
-//        addButton.setPreferredSize(new Dimension(85, 25));
-//        editarButton.setPreferredSize(new Dimension(85, 25));
-//        crearButton.setPreferredSize(new Dimension(120, 25));
-//        cancelarButton.setPreferredSize(new Dimension(85, 25));
-//        buscarButton.setPreferredSize(new Dimension(85, 25));
+        cancelarButton = new JButton("Cancelar", new FlatSVGIcon("icons/x.svg"));
+//        buscarButton = new JButton("Buscar");
+
     }
     
     private void setupLayout() {
@@ -117,7 +108,7 @@ public class GestorConceptosDialog extends JDialog {
         searchPanel.add(buscarLabel);
         searchPanel.add(tipoBusquedaCombo);
         searchPanel.add(buscarField);
-        searchPanel.add(buscarButton);
+//        searchPanel.add(buscarButton);
         searchPanel.add(crearButton);
         
         // Panel central (tabla e información)
@@ -155,7 +146,7 @@ public class GestorConceptosDialog extends JDialog {
         consultarButton.addActionListener(this::consultarMaterial);
         editarButton.addActionListener(this::editarConcepto);
         crearButton.addActionListener(this::crearConcepto);
-        buscarButton.addActionListener(e -> realizarBusqueda());
+//        buscarButton.addActionListener(e -> realizarBusqueda());
         
         buscarField.addKeyListener(new KeyAdapter() {
             @Override

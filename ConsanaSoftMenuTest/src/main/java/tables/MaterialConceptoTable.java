@@ -169,8 +169,9 @@ public class MaterialConceptoTable extends BaseTable {
         setColumnMinWidth(0, 0);  // ID
         setColumnMaxWidth(0, 0);  // ID
         
-        setColumnMaxWidth(1, 100); // Clave
-        setColumnMaxWidth(2, 50);  // Unidad
-        setColumnMaxWidth(3, 60);  // Cantidad
+        setColumnMaxWidth(1, 120); // Clave
+//        setColumnMaxWidth(2, 120); // Clave
+        setColumnMaxWidth(3, 50);  // Unidad
+        setColumnMaxWidth(4, 60);  // Cantidad
     }
 }

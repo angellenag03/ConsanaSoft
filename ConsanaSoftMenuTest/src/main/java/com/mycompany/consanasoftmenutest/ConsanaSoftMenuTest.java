@@ -7,7 +7,7 @@ import utils.FontSetter;
 public class ConsanaSoftMenuTest {
 
     public static void main(String[] args) {
-        FontSetter.setDefaultFontToBahnschrift();
+        FontSetter.setDefaultFont();
         
         SwingUtilities.invokeLater(() -> {
             MenuFrame mf = new MenuFrame();

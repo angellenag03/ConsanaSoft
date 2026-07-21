@@ -1,5 +1,7 @@
 package ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.google.gson.Gson;
 import dto.ObraDTO;
 import utils.HTTPManager;
@@ -38,30 +40,27 @@ public class NuevaObraDialog extends JDialog {
     private void initComponents() {
         // Configuración del título
         tituloLabel = new JLabel("Complete los datos de la nueva obra:");
-        tituloLabel.setFont(new Font("Arial", Font.BOLD, 16));
+//        tituloLabel.setFont(new Font("Arial", Font.BOLD, 16));
         tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
         // Campos de texto para la obra
         numObraField = new JTextField(15);
+        numObraField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Número de Obra");
         nombreField = new JTextField(15);
+        nombreField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nombre");
         direccionField = new JTextField(15);
+        direccionField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Dirección");
         latitudField = new JTextField(10);
+        latitudField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Latitud");
         longitudField = new JTextField(10);
-        
-        // Establecer fuentes consistentes
-        Font fieldFont = new Font("Arial", Font.PLAIN, 12);
-        numObraField.setFont(fieldFont);
-        nombreField.setFont(fieldFont);
-        direccionField.setFont(fieldFont);
-        latitudField.setFont(fieldFont);
-        longitudField.setFont(fieldFont);
-        
+        longitudField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Longitud");
+
         // Botones con estilo consistente
-        crearButton = new JButton("Crear");
-        cancelarButton = new JButton("Cancelar");
+        crearButton = new JButton("Crear", new FlatSVGIcon("icons/file-plus.svg"));
+        cancelarButton = new JButton("Cancelar", new FlatSVGIcon("icons/x.svg"));
         
-        crearButton.setPreferredSize(new Dimension(80, 25));
-        cancelarButton.setPreferredSize(new Dimension(90, 25));
+//        crearButton.setPreferredSize(new Dimension(80, 25));
+//        cancelarButton.setPreferredSize(new Dimension(90, 25));
     }
     
     private void setupLayout() {

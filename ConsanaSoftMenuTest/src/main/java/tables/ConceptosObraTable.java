@@ -100,6 +100,7 @@ public class ConceptosObraTable extends BaseTable {
         setColumnPreferredWidth(3, 20);    // Cantidad
         setColumnPreferredWidth(4, 20);    // Instalado
         setColumnPreferredWidth(5, 20);    // Por Instalar
+        setColumnMinWidth(6, 0);
         setColumnMaxWidth(6, 0); // ID
     }
     
