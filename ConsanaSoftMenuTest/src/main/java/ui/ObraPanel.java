@@ -1,6 +1,5 @@
 package ui;
 
-import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import dto.ObraDTO;
 import tables.ConceptosObraTable;
@@ -15,10 +14,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -41,6 +41,9 @@ public class ObraPanel extends JPanel {
     private JButton instalarMaterialButton;
     private JButton exportarButton;
     private JButton exportarValesButton;
+    
+    private JComboBox filtrosRegBox;
+    private JLabel filtrosRegLabel;
     
     private ConceptosObraTable conceptosTable;
     private HistorialConceptosTable historialConceptosTable;
@@ -73,6 +76,17 @@ public class ObraPanel extends JPanel {
         instalarMaterialButton = new JButton("Generar Vale", new FlatSVGIcon("icons/square-chevrons-up.svg"));
         exportarButton = new JButton("Exportar", new FlatSVGIcon("icons/file-spreadsheet.svg"));
         exportarValesButton = new JButton("Exportar Vale", new FlatSVGIcon("icons/file-spreadsheet.svg"));
+        
+        filtrosRegLabel = new JLabel("Filtrar por:");
+        
+        filtrosRegBox = new JComboBox<>();        
+        filtrosRegBox.addItem("General");
+        filtrosRegBox.addItem("Añadido");
+        filtrosRegBox.addItem("Removido");
+        filtrosRegBox.addItem("Instalado");
+        filtrosRegBox.addItem("Desinstalado");
+        filtrosRegBox.addItem("Añadido y Removido");
+        filtrosRegBox.addItem("Instalado y Desinstalado");
         
         conceptosTable = new ConceptosObraTable(obra.getId());
         historialConceptosTable = new HistorialConceptosTable();
@@ -121,6 +135,7 @@ public class ObraPanel extends JPanel {
                 uninstConceptoButton.setEnabled(false);
                 if (!e.getValueIsAdjusting()) {
                     Long conceptoId = conceptosTable.getConceptoId();
+//                    claveObraLabel.setText(conceptosTable.getClave()); // PENDIENTE
                     if (conceptoId != null) {
                         if(!conceptosTable.isFullInstalado()) {
                             instConceptoButton.setEnabled(true);
@@ -130,6 +145,7 @@ public class ObraPanel extends JPanel {
                         }
                         removerButton.setEnabled(true);
                         historialConceptosTable.cargarDatosConceptoObra(conceptoId, obra.getId());
+                        historialConceptosTable.aplicarFiltro((String) filtrosRegBox.getSelectedItem());
                     }
                 }
             }
@@ -150,6 +166,7 @@ public class ObraPanel extends JPanel {
         });
         
         // ActionListeners
+        filtrosRegBox.addActionListener(this::filtrarHistorialConceptos);
         salirButtonConceptos.addActionListener(this::regresarAlMenu);
         salirButtonInsumos.addActionListener(this::regresarAlMenu);
         aniadirButton.addActionListener(this::addConcepto);
@@ -171,7 +188,12 @@ public class ObraPanel extends JPanel {
         conceptosButtonPanel.add(removerButton);
         conceptosButtonPanel.add(instConceptoButton);
         conceptosButtonPanel.add(uninstConceptoButton);
-        conceptosButtonPanel.add(salirButtonConceptos);
+        
+        // Panel de botones para el registro de conceptos
+        JPanel registrosButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        registrosButtonPanel.add(filtrosRegLabel);
+        registrosButtonPanel.add(filtrosRegBox);
+        registrosButtonPanel.add(salirButtonConceptos);
         
         // Panel de botones para insumos (suministrar y salir)
         JPanel insumosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -197,7 +219,16 @@ public class ObraPanel extends JPanel {
         JPanel conceptosPanel = new JPanel(new BorderLayout());
         conceptosPanel.add(conceptosButtonPanel, BorderLayout.NORTH);
         conceptosPanel.add(new JScrollPane(conceptosTable), BorderLayout.CENTER);
-        conceptosPanel.add(new JScrollPane(historialConceptosTable), BorderLayout.EAST);
+        
+        // Panel contenedor de registros de conceptos
+        JPanel registrosPanel = new JPanel(new BorderLayout());
+        registrosPanel.add(registrosButtonPanel, BorderLayout.NORTH);
+        registrosPanel.add(new JScrollPane(historialConceptosTable), BorderLayout.CENTER);
+        
+        // Panel Principal contenedor de la tabla de conceptos y sus botones
+        JPanel conceptosMainPanel = new JPanel(new BorderLayout());
+        conceptosMainPanel.add(conceptosPanel, BorderLayout.CENTER);
+        conceptosMainPanel.add(registrosPanel, BorderLayout.EAST);
         
         // Panel para la pestaña de Vales Generados
         JPanel valesPanel = new JPanel(new BorderLayout());
@@ -221,7 +252,7 @@ public class ObraPanel extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
         
         // Pestaña de conceptos
-        tabbedPane.addTab("Conceptos", conceptosPanel);
+        tabbedPane.addTab("Conceptos", conceptosMainPanel);
         
         // Pestaña de insumos
         tabbedPane.addTab("Insumos", insumosPanel);
@@ -310,6 +341,11 @@ public class ObraPanel extends JPanel {
             parentFrame.repaint();
             parentFrame.setTitle("ConsanaSoft");
         });
+    }
+    
+    private void filtrarHistorialConceptos(ActionEvent e) {
+        String filtro = (String) filtrosRegBox.getSelectedItem();
+        historialConceptosTable.aplicarFiltro(filtro);
     }
     
     private static String getFechaHora() {

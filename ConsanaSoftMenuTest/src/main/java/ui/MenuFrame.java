@@ -85,21 +85,18 @@ public class MenuFrame extends JFrame {
             UIManager.put( "ScrollBar.thumbInsets", new Insets( 2, 2, 2, 2 ) );
             // TEXTCOMPONENT (JTextField)
             UIManager.put("TextComponent.arc", 12);
-
+            // BUTTONS
+            UIManager.put( "Button.arc", 999 );
+            // SYSYEM PROPERTIES
+//            System.setProperty( "flatlaf.animation", "true" );
+            
             FlatLightLaf.setup();
             SwingUtilities.updateComponentTreeUI(this);
-            DebugConsole.log("✓ Tema del sistema cargado correctamente");
+            DebugConsole.log("Tema del sistema cargado correctamente");
         } catch (Exception ex) {
-            DebugConsole.logError("✗ Error al cargar el tema: " + ex.getMessage());
+            DebugConsole.logError("Error al cargar el tema: " + ex.getMessage());
             DebugConsole.logException(ex);
         } 
     }
     
-    @Override
-    public void dispose() {
-        // Limpiar recursos de la consola al cerrar
-        DebugConsole.log("Cerrando aplicación...");
-        DebugConsole.cleanup();
-        super.dispose();
-    }
 }
