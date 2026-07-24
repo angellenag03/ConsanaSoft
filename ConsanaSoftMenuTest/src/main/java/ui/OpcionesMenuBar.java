@@ -22,6 +22,7 @@ public class OpcionesMenuBar extends JMenuBar {
     private JMenuItem acercaDe;
    
     // MATERIALES
+    private JMenuItem ingresarMateriales;
     private JMenuItem ingresarMaterial;
     private JMenuItem revisarAlmacen;
     private JMenuItem revisarExistencias;
@@ -60,7 +61,8 @@ public class OpcionesMenuBar extends JMenuBar {
         abrirObraReciente = new JMenuItem("Abrir Obra Reciente");
         
         // MATERIALES
-        ingresarMaterial = new JMenuItem("Ingresar Material al Almacén");
+        ingresarMateriales = new JMenuItem("Ingresar Materiales al Almacén");
+        ingresarMaterial = new JMenuItem("Crear Nuevo Material");
         revisarAlmacen = new JMenuItem("Revisar Almacén");
         revisarExistencias = new JMenuItem("Revisar Existencias");
         
@@ -87,6 +89,7 @@ public class OpcionesMenuBar extends JMenuBar {
         menuObra.add(abrirObraReciente);
         
         // MATERIALES
+        menuMaterial.add(ingresarMateriales);
         menuMaterial.add(ingresarMaterial);
         menuMaterial.add(revisarAlmacen);
         menuMaterial.add(revisarExistencias);
@@ -101,6 +104,7 @@ public class OpcionesMenuBar extends JMenuBar {
         abrirObra.addActionListener(this::abrirObraJDialog);
         acercaDe.addActionListener(this::mostrarAcercaDe);
         abrirObraReciente.addActionListener(this::abrirObraRecienteDialog);
+        ingresarMateriales.addActionListener(this::ingresarMateriales);
         ingresarMaterial.addActionListener(this::ingresarMaterial);
         revisarAlmacen.addActionListener(this::revisarAlmacen);
         revisarExistencias.addActionListener(this::revisarExistencias);
@@ -140,6 +144,11 @@ public class OpcionesMenuBar extends JMenuBar {
                         "Error: " + ex.getMessage(), 
                         "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private void ingresarMateriales(ActionEvent e) {
+        NuevoMaterialDialog2 dialog = new NuevoMaterialDialog2(parentFrame);
+        dialog.setVisible(true);
     }
     
     private void ingresarMaterial(ActionEvent e) {

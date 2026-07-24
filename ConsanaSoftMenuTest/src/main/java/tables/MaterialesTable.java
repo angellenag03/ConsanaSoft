@@ -74,6 +74,6 @@ public class MaterialesTable extends BaseTable {
         setColumnMaxWidth(0, 0);  // ID
         
         setColumnMaxWidth(1, 100); // Clave
-        setColumnMaxWidth(2, 50);  // Unidad
+        setColumnMaxWidth(3, 50);  // Unidad
     }
 }

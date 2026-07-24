@@ -46,6 +46,7 @@ public class MaterialGeneraValeTable extends BaseTable {
             Type materialesObra = new TypeToken<List<MaterialObraDTO>>(){}.getType();
             List<MaterialObraDTO> materiales = gson.fromJson(response, materialesObra);
             for (MaterialObraDTO m : materiales) {
+                // filtra por materiales que no contengan suministro
                 if(!m.getCantidadExistente().equals("0.0")) {
                     model.addRow(new Object[]{
                         m.getId(),

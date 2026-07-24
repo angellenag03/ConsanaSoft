@@ -61,7 +61,7 @@ public class NuevoConceptoDialog extends JDialog {
         nombreArea = new JTextArea(3, 20);
         nombreArea.setLineWrap(true);
         nombreArea.setWrapStyleWord(true);
-        nombreArea.setBackground(new Color(0x1F2B30));
+//        nombreArea.setBackground(new Color(0x1F2B30));
         nombreArea.setForeground(Color.WHITE);
         unidadField = new JTextField(10);
         

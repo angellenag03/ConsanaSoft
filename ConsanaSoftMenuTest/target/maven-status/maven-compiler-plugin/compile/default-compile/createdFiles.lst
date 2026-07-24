@@ -9,6 +9,7 @@ tables\HistorialMaterialTable$CantidadRenderer.class
 utils\HTTPManager$HttpMethod.class
 ui\NuevaObraDialog.class
 utils\DebugConsole$4.class
+tables\MaterialIngresaAlmacenTable.class
 ui\AddConceptoAObraDialog$2.class
 dto\MaterialConceptoDTO.class
 ui\RemoverConceptosDialog$1.class
@@ -17,6 +18,7 @@ ui\AbrirObraDialog$1.class
 ui\GestorConceptosDialog.class
 utils\DebugConsole$1.class
 ui\SeleccionarMaterialDialog.class
+ui\NuevoMaterialDialog2$1.class
 ui\RemoverConceptosDialog.class
 ui\DesInstalarConceptoDialog.class
 ui\DesInstalarConceptoDialog$NumericDocumentFilter.class
@@ -42,19 +44,21 @@ tables\MaterialConceptoTable$2.class
 tables\ObrasNombreFechaTable$1.class
 tables\FechasValesTable$1.class
 ui\GestorConceptosDialog$1.class
+ui\NuevoMaterialDialog2.class
 ui\InstalarMaterialObraDialog.class
 utils\DebugConsole$6.class
 tables\MaterialesTable.class
+dto\SuministrarManyDTO.class
 utils\DebugConsole.class
 ui\AlmacenDialog$2.class
 tables\BaseTable.class
 dto\ConceptoConMaterialDTO$MaterialConceptoInputDTO.class
 com\mycompany\consanasoftmenutest\ConsanaSoftMenuTest.class
 tables\HistorialConceptosTable$1.class
-ui\NuevoMaterialDialog$2.class
 ui\SuministrarMaterialObraDialog.class
 dto\MaterialObraDTO.class
 tables\ConceptosTable.class
+tables\MaterialIngresaAlmacenTable$1.class
 ui\ObraPanel$3.class
 tables\MaterialGeneraValeTable$2.class
 ui\NuevoMaterialDialog.class
@@ -101,6 +105,7 @@ ui\ObraPanel$1.class
 dto\ConceptoConMaterialDTO.class
 ui\ObraPanel.class
 ui\SuministrarMaterialObraDialog$1.class
+ui\NuevoMaterialDialog2$2.class
 dto\HistorialMaterialDTO.class
 utils\HTTPManager.class
 ui\AddConceptoAObraDialog$1.class

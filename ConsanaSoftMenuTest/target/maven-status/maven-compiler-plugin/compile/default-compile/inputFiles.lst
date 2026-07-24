@@ -18,6 +18,8 @@ D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\Instal
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\EditarMaterialDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\HistorialMaterialTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\MaterialConceptoTable.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\NuevoMaterialDialog2.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\SuministrarManyDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\MaterialesTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\ConceptoObraDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\RemoverConceptosDialog.java
@@ -38,6 +40,7 @@ D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\utils\Exc
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\ObraDTO.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\DesInstalarConceptoDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\SuministrarMaterialObraDialog.java
+D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\MaterialIngresaAlmacenTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\tables\HistorialConceptosTable.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\ui\NuevaObraDialog.java
 D:\01-CODIGOS\01-CONSANA\ConsanaSoft\ConsanaSoftMenuTest\src\main\java\dto\MaterialOutputDTO.java

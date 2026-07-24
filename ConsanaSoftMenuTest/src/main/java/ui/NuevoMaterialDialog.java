@@ -1,15 +1,10 @@
 package ui;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import utils.FechaPicker;
-import utils.HTTPManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import utils.HTTPManager;
 
 public class NuevoMaterialDialog extends JDialog {
     private JLabel tituloLabel;
@@ -17,98 +12,47 @@ public class NuevoMaterialDialog extends JDialog {
     private JLabel claveLabel;
     private JLabel nombreLabel;
     private JLabel unidadLabel;
-    private JLabel cantidadLabel;
-    private JLabel origenLabel;
-    private JLabel numeroDocumentoLabel;
-    private JLabel fechaRegistroLabel;
-    private JLabel referenciaLabel;
 
     private JTextField claveField;
     private JTextField nombreField;
     private JTextField unidadField;
-    private JTextField cantidadField;
-    private JComboBox<String> origenBox;
-    private JTextField numeroDocumentoField;
-    private FechaPicker fechaOrigenPicker;
-    private JTextField referenciaField;
-    private JComboBox<String> obraComboBox;
-
-    private JPanel referenciaContainer;
-    private CardLayout referenciaLayout;
 
     private JButton guardarButton;
     private JButton cancelarButton;
-    private JButton seleccionarExistenteButton;
-
+    
     private JFrame parentFrame;
     private final HTTPManager http = HTTPManager.getInstance();
-    private final Gson gson = new Gson();
+    private boolean guardado = false;
 
     public NuevoMaterialDialog(JFrame parentFrame) {
         super(parentFrame, "Nuevo Material", true);
+        this.parentFrame = parentFrame;
         initComponents();
         setupLayout();
         setupBehavior();
-        this.setSize(450, 600);
+        this.pack(); // Ajusta automáticamente el tamaño al contenido
+        this.setMinimumSize(new Dimension(380, 220));
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
     }
 
     private void initComponents() {
-        tituloLabel = new JLabel("Complete los datos del nuevo material:");
-        tituloLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        tituloLabel = new JLabel("Complete los datos del material:");
         tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        claveLabel = new JLabel("Clave: ");
+        claveLabel = new JLabel("Clave:");
         nombreLabel = new JLabel("Nombre:");
         unidadLabel = new JLabel("Unidad:");
-        cantidadLabel = new JLabel("Cantidad:");
-        origenLabel = new JLabel("Origen:");
-        numeroDocumentoLabel = new JLabel("Número Documento:");
-        fechaRegistroLabel = new JLabel("Fecha de Registro:");
-        referenciaLabel = new JLabel("Referencia:");
 
         claveField = new JTextField(15);
         nombreField = new JTextField(15);
         unidadField = new JTextField(10);
-        cantidadField = new JTextField(8);
-        origenBox = new JComboBox<>(new String[]{"FACTURA", "VALE"});
-        numeroDocumentoField = new JTextField(15);
-        fechaOrigenPicker = new FechaPicker();
-        referenciaField = new JTextField(20);
-        obraComboBox = new JComboBox<>();
-
-        Font fieldFont = new Font("Arial", Font.PLAIN, 12);
-        nombreLabel.setFont(fieldFont);
-        unidadLabel.setFont(fieldFont);
-        cantidadLabel.setFont(fieldFont);
-        origenLabel.setFont(fieldFont);
-        numeroDocumentoLabel.setFont(fieldFont);
-        fechaRegistroLabel.setFont(fieldFont);
-        referenciaLabel.setFont(fieldFont);
-
-        nombreField.setFont(fieldFont);
-        unidadField.setFont(fieldFont);
-        cantidadField.setFont(fieldFont);
-        origenBox.setFont(fieldFont);
-        numeroDocumentoField.setFont(fieldFont);
-        referenciaField.setFont(fieldFont);
-        obraComboBox.setFont(fieldFont);
-
-        referenciaLayout = new CardLayout();
-        referenciaContainer = new JPanel(referenciaLayout);
-        referenciaContainer.add(referenciaField, "FACTURA");
-        referenciaContainer.add(obraComboBox, "VALE");
 
         guardarButton = new JButton("Guardar");
         cancelarButton = new JButton("Cancelar");
-        seleccionarExistenteButton = new JButton("Seleccionar existente");
 
-        guardarButton.setEnabled(false);
         guardarButton.setPreferredSize(new Dimension(85, 25));
         cancelarButton.setPreferredSize(new Dimension(85, 25));
-        
-        showComponents(false);
     }
 
     private void setupLayout() {
@@ -120,36 +64,18 @@ public class NuevoMaterialDialog extends JDialog {
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JPanel datosPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        JPanel datosPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         datosPanel.add(claveLabel);
         datosPanel.add(claveField);
         datosPanel.add(nombreLabel);
         datosPanel.add(nombreField);
-        
         datosPanel.add(unidadLabel);
         datosPanel.add(unidadField);
-        
-        datosPanel.add(cantidadLabel);
-        datosPanel.add(cantidadField);
-        
-        datosPanel.add(origenLabel);
-        datosPanel.add(origenBox);
-        
-        datosPanel.add(numeroDocumentoLabel);
-        datosPanel.add(numeroDocumentoField);
-        
-        datosPanel.add(fechaRegistroLabel);
-        datosPanel.add(fechaOrigenPicker);
-        
-        datosPanel.add(referenciaLabel);
-        datosPanel.add(referenciaContainer);
 
         centerPanel.add(datosPanel);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-        buttonPanel.add(seleccionarExistenteButton);
         buttonPanel.add(cancelarButton);
         buttonPanel.add(guardarButton);
 
@@ -163,7 +89,6 @@ public class NuevoMaterialDialog extends JDialog {
     private void setupBehavior() {
         cancelarButton.addActionListener(e -> dispose());
         guardarButton.addActionListener(this::onGuardar);
-        origenBox.addActionListener(this::alterarLabels);
 
         getRootPane().setDefaultButton(guardarButton);
 
@@ -177,76 +102,23 @@ public class NuevoMaterialDialog extends JDialog {
         });
 
         nombreField.addActionListener(this::buscarExistente);
-        
-        seleccionarExistenteButton.addActionListener(e -> {
-            SeleccionarMaterialDialog dialog = new SeleccionarMaterialDialog((JFrame) getParent());
-            dialog.setVisible(true);
 
-            if (dialog.getNombreSeleccionado() != null) {
-                nombreField.setText(dialog.getNombreSeleccionado());
-                unidadField.setText(dialog.getUnidadSeleccionada());
-            }
-        });
-    }
-
-    private void alterarLabels(ActionEvent e) {
-        String item = (String) origenBox.getSelectedItem();
-        switch (item) {
-            case "VALE":
-                numeroDocumentoLabel.setText("Número de Vale:");
-                referenciaLabel.setText("Número de Obra:");
-                referenciaLayout.show(referenciaContainer, "VALE");
-                cargarObrasDisponibles();
-                break;
-            case "FACTURA":
-                numeroDocumentoLabel.setText("Número de Factura:");
-                referenciaLabel.setText("Proveedor:");
-                referenciaLayout.show(referenciaContainer, "FACTURA");
-                break;
-        }
-        guardarButton.setEnabled(true);
-        showComponents(true);
-    }
-
-    private void cargarObrasDisponibles() {
-        try {
-            String response = http.executeRequest("/obra/claves");
-            List<String> obras = gson.fromJson(response, new TypeToken<List<String>>(){}.getType());
-            obraComboBox.removeAllItems();
-            for (String obra : obras) {
-                obraComboBox.addItem(obra);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al cargar las obras disponibles: " + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }
     }
 
     private void onGuardar(ActionEvent e) {
         try {
             if (validarCampos()) {
-                
-                String origen = (String) origenBox.getSelectedItem();
-                
                 HashMap<String, Object> material = new HashMap<>();
                 material.put("clave", claveField.getText().trim());
                 material.put("nombre", nombreField.getText().trim());
                 material.put("unidad", unidadField.getText().trim());
-                material.put("cantidad", cantidadField.getText().trim());
-                material.put("origen", "VALE".equals(origen) ? "VALE_DE_ENTRADA" : origen);
-                material.put("numeroDocumento", numeroDocumentoField.getText().trim());
-                material.put("fechaOrigen", fechaOrigenPicker.getFecha());
-                material.put("referencia", "VALE".equals(origen) ? 
-                    obraComboBox.getSelectedItem() : referenciaField.getText().trim());
 
                 http.executeRequest(HTTPManager.HttpMethod.POST, "/material", material);
-                
+
                 JOptionPane.showMessageDialog(this,
-                        "Material creado/suministrado con éxito!",
-                        "Atención", JOptionPane.INFORMATION_MESSAGE);
-                
+                        "¡Material creado con éxito!",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -263,26 +135,34 @@ public class NuevoMaterialDialog extends JDialog {
 
     private boolean validarCampos() {
         return !nombreField.getText().trim().isEmpty()
-            && !unidadField.getText().trim().isEmpty()
-            && !cantidadField.getText().trim().isEmpty();
+            && !unidadField.getText().trim().isEmpty();
     }
 
-    private void showComponents(boolean visible){
-        numeroDocumentoLabel.setVisible(visible);
-        numeroDocumentoField.setVisible(visible);
-        fechaRegistroLabel.setVisible(visible);
-        fechaOrigenPicker.setVisible(visible);
-        referenciaLabel.setVisible(visible);
-        referenciaContainer.setVisible(visible);
-    }
-    
     private void buscarExistente(ActionEvent e) {
         SeleccionarMaterialDialog dialog = new SeleccionarMaterialDialog(parentFrame, nombreField.getText());
         dialog.setVisible(true);
-        
+
         if (dialog.getNombreSeleccionado() != null) {
-                nombreField.setText(dialog.getNombreSeleccionado());
-                unidadField.setText(dialog.getUnidadSeleccionada());
+            nombreField.setText(dialog.getNombreSeleccionado());
+            unidadField.setText(dialog.getUnidadSeleccionada());
         }
+    }
+
+    // --- Getters para recuperar la información cargada ---
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public String getClave() {
+        return claveField.getText().trim();
+    }
+
+    public String getNombre() {
+        return nombreField.getText().trim();
+    }
+
+    public String getUnidad() {
+        return unidadField.getText().trim();
     }
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import tables.MaterialGeneraValeTable;
@@ -51,6 +52,13 @@ public class InstalarMaterialesDialog extends JDialog {
         instalarButton = new JButton("Generar Vale");
         cancelarButton = new JButton("Cancelar");
         materialGeneraValeTable = new MaterialGeneraValeTable(obraId);
+        if(materialGeneraValeTable.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, 
+                        "Para poder usar esta opción primero debe suministrar material a la obra", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                dispose();
+            } 
     }
     
     private void setupLayout() {
